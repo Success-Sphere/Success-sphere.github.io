@@ -7,7 +7,15 @@ document.querySelectorAll("a").forEach((anchor) => {
     });
   });
 });
-
+// Hero Button Click
+document.querySelectorAll(".hero-btn").forEach((button) => {
+  button.addEventListener("click", function (e) {
+    const target = e.target.getAttribute("href");
+    if (target) {
+      window.location.href = target;
+    }
+  });
+});
 // Form Validation for Login and Register
 function validateForm(form) {
   let isValid = true;
