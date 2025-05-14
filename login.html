@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login - EduMasterPro</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <!-- Navbar -->
+    <header class="navbar">
+      <a href="index.html" class="logo">EduMasterPro</a>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="courses.html">Courses</a></li>
+        <li><a href="login.html" class="btn">Login</a></li>
+        <li><a href="register.html">Register</a></li>
+      </ul>
+    </header>
+
+    <!-- Login Section -->
+    <section class="auth-section">
+      <div class="auth-container">
+        <h2>Login to Your Account</h2>
+        <form action="login.php" method="POST" class="auth-form">
+          <div class="form-group">
+            <label for="email">Email Address</label>
+            <input type="email" name="email" id="email" required />
+          </div>
+
+          <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" name="password" id="password" required />
+          </div>
+
+          <button type="submit" class="btn">Login</button>
+
+          <p class="form-note">
+            Don’t have an account? <a href="register.html">Register here</a>.
+          </p>
+        </form>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="footer-container">
+        <div class="footer-column">
+          <h3>EduMasterPro</h3>
+          <p>Your gateway to smart and successful learning.</p>
+        </div>
+        <div class="footer-column">
+          <h4>Resources</h4>
+          <ul>
+            <li><a href="about.html">About Us</a></li>
+            <li><a href="courses.html">Courses</a></li>
+            <li><a href="contact.html">Contact</a></li>
+          </ul>
+        </div>
+        <div class="footer-column">
+          <h4>Support</h4>
+          <p>Email: help@edumasterpro.com</p>
+          <p>Phone: +1 800 123 4567</p>
+          <div class="social-icons">
+            <a href="#"
+              ><img src="images/icon-facebook.svg" alt="Facebook"
+            /></a>
+            <a href="#"><img src="images/icon-twitter.svg" alt="Twitter" /></a>
+            <a href="#"
+              ><img src="images/icon-linkedin.svg" alt="LinkedIn"
+            /></a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2025 Instructification. All rights reserved.</p>
+      </div>
+    </footer>
+  </body>
+</html>
