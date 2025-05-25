@@ -1,46 +1,87 @@
-// Smooth scroll for navigation
-document.querySelectorAll("a").forEach((anchor) => {
-  anchor.addEventListener("click", function (e) {
-    e.preventDefault();
-    document.querySelector(this.getAttribute("href")).scrollIntoView({
-      behavior: "smooth",
-    });
+// Sidebar Toggle
+function toggleSidebar() {
+  const sidebar = document.getElementById("mobileSidebar");
+  sidebar.classList.toggle("open");
+}
+
+// Close Sidebar on Link Click
+document.querySelectorAll(".sidebar a").forEach((link) => {
+  link.addEventListener("click", () => {
+    toggleSidebar();
   });
 });
-// Hero Button Click
-document.querySelectorAll(".hero-btn").forEach((button) => {
-  button.addEventListener("click", function (e) {
-    const target = e.target.getAttribute("href");
+
+// Close Sidebar on Outside Click (Mobile Only)
+document.addEventListener("click", (e) => {
+  const sidebar = document.getElementById("mobileSidebar");
+  const topbar = document.querySelector(".topbar");
+
+  if (
+    !sidebar.contains(e.target) &&
+    !topbar.contains(e.target) &&
+    sidebar.classList.contains("open")
+  ) {
+    sidebar.classList.remove("open");
+  }
+});
+
+// Close Sidebar on Escape Key Press
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape") {
+    const sidebar = document.getElementById("mobileSidebar");
+    sidebar.classList.remove("open");
+  }
+});
+
+// Smooth Scroll for Internal Links
+document.querySelectorAll("a[href^='#']").forEach((anchor) => {
+  anchor.addEventListener("click", function (e) {
+    e.preventDefault();
+    const target = document.querySelector(this.getAttribute("href"));
     if (target) {
-      window.location.href = target;
+      target.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
     }
   });
 });
-// Form Validation for Login and Register
-function validateForm(form) {
-  let isValid = true;
 
-  const username = form.querySelector('[name="username"]');
-  const password = form.querySelector('[name="password"]');
-  const email = form.querySelector('[name="email"]'); // For register form
+// Button Hover Effects
+document.querySelectorAll(".btn").forEach((button) => {
+  button.addEventListener("mouseover", () => {
+    button.style.transform = "scale(1.05)";
+  });
+  button.addEventListener("mouseout", () => {
+    button.style.transform = "scale(1)";
+  });
+});
 
-  if (username && username.value.trim() === "") {
-    isValid = false;
-    alert("Username cannot be empty");
-  }
-
-  if (password && password.value.trim() === "") {
-    isValid = false;
-    alert("Password cannot be empty");
-  }
-
-  if (email && email.value.trim() === "") {
-    isValid = false;
-    alert("Email cannot be empty");
-  }
-
-  return isValid;
+// Hero Button Animation
+const heroButton = document.querySelector(".hero .btn");
+if (heroButton) {
+  heroButton.addEventListener("mouseover", () => {
+    heroButton.style.boxShadow = "0px 10px 20px rgba(0, 0, 0, 0.2)";
+  });
+  heroButton.addEventListener("mouseout", () => {
+    heroButton.style.boxShadow = "none";
+  });
 }
+
+// Form Validation (Optional)
+document.querySelectorAll("form").forEach((form) => {
+  form.addEventListener("submit", (e) => {
+    const inputs = form.querySelectorAll("input[required]");
+    for (let input of inputs) {
+      if (!input.value.trim()) {
+        e.preventDefault();
+        alert("Please fill in all required fields.");
+        input.focus();
+        return;
+      }
+    }
+  });
+});
 
 // Login Form Submission
 const loginForm = document.querySelector("#login-form");
