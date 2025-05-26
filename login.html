@@ -5,18 +5,28 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Login - Success Sphere</title>
     <link rel="stylesheet" href="style.css" />
+    <script src="script.js" defer></script>
   </head>
   <body>
-    <!-- Navbar -->
-    <header class="navbar">
-      <a href="index.html" class="logo">EduMasterPro</a>
-      <ul>
-        <li><a href="index.html">Home</a></li>
-        <li><a href="courses.html">Courses</a></li>
-        <li><a href="login.html" class="btn">Login</a></li>
-        <li><a href="register.html">Register</a></li>
-      </ul>
-    </header>
+    <!-- Header -->
+    <div id="mobileSidebar" class="sidebar">
+      <a href="javascript:void(0)" class="closebtn" onclick="toggleSidebar()"
+        >&times;</a
+      >
+      <a href="index.html">Home</a>
+      <a href="about.html">About</a>
+      <a href="courses.html">Courses</a>
+      <a href="blog.html">Blog</a>
+      <a href="contact.html">Contact</a>
+      <a href="login.html">Login</a>
+      <a href="register.html">Register</a>
+    </div>
+
+    <!-- Top Bar with Menu Icon -->
+    <div class="topbar">
+      <span class="menu-icon" onclick="toggleSidebar()">&#9776;</span>
+      <h1 class="logo">Success Sphere</h1>
+    </div>
 
     <!-- Login Section -->
     <section class="auth-section">

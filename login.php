@@ -1,61 +1,39 @@
 <?php
-session_start();
+require 'vendor/autoload.php';
+require 'PHPMailer-master/src/PHPMailer.php';
+require 'PHPMailer-master/src/SMTP.php';
+require 'PHPMailer-master/src/Exception.php';
 
-// Database connection
-$host = "localhost";
-$user = "root";
-$password = "";
-$dbname = "edumasterpro";
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
 
-$conn = new mysqli($host, $user, $password, $dbname);
+$mail = new PHPMailer(true);
 
-// Check connection
-if ($conn->connect_error) {
-  die("Connection failed: " . $conn->connect_error);
-}
-
-// Handle login form submission
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
-  $email = trim($_POST["email"]);
-  $password = trim($_POST["password"]);
+    $email = $_POST['email'];
+    $password = $_POST['password'];
 
-  // Validate input
-  if (empty($email) || empty($password)) {
-    $_SESSION['error'] = "Please fill in all fields.";
-    header("Location: ../login.html");
-    exit;
-  }
+    $mail = new PHPMailer(true);
+    try {
+        $mail->isSMTP();
+        $mail->Host = 'smtp.gmail.com';
+        $mail->SMTPAuth = true;
+        $mail->Username = 'edumaster201345@gmail.com';
+        $mail->Password = 'bcai cqgb dovk mwuu';
+        $mail->SMTPSecure = 'tls';
+        $mail->Port = 587;
 
-  // Fetch user from database
-  $stmt = $conn->prepare("SELECT id, name, password FROM users WHERE email = ?");
-  $stmt->bind_param("s", $email);
-  $stmt->execute();
-  $stmt->store_result();
+        $mail->setFrom('edumaster201345@gmail.com', 'Success Sphere');
+        $mail->addAddress($email);
 
-  if ($stmt->num_rows === 1) {
-    $stmt->bind_result($user_id, $user_name, $hashed_password);
-    $stmt->fetch();
+        $mail->isHTML(true);
+        $mail->Subject = 'Login Notification';
+        $mail->Body = "Hello,<br><br>A login attempt was made to your account. If this was you, no action is needed.<br><br>If this wasn't you, please reset your password.<br><br>Regards,<br>Success Sphere Team";
 
-    // Verify password
-    if (password_verify($password, $hashed_password)) {
-      $_SESSION['user_id'] = $user_id;
-      $_SESSION['user_name'] = $user_name;
-      header("Location: ../index.html"); // or dashboard.html
-      exit;
-    } else {
-      $_SESSION['error'] = "Invalid password.";
-      header("Location: ../login.html");
-      exit;
+        $mail->send();
+        echo "✅ Login successful. Notification sent to $email.";
+    } catch (Exception $e) {
+        echo "❌ Could not send login email. Error: {$mail->ErrorInfo}";
     }
-  } else {
-    $_SESSION['error'] = "No account found with that email.";
-    header("Location: ../login.html");
-    exit;
-  }
-
-  $stmt->close();
-  $conn->close();
-} else {
-  header("Location: ../login.html");
 }
 ?>

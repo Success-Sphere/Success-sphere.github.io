@@ -1,124 +1,45 @@
 <?php
-require 'vendor/autoload.php';
-use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\Exception;
-$name = htmlspecialchars($_POST["name"]);
-$email = htmlspecialchars($_POST["email"]);
-$phone = htmlspecialchars($_POST["phone"]);
-$subject = htmlspecialchars($_POST["subject"]);
-$message = nl2br(htmlspecialchars($_POST["message"]));
-try {
-    $mail = new PHPMailer(true);
-    $mail->isSMTP();
-    $mail->Host = 'smtp.gmail.com';
-    $mail->SMTPAuth = true;
-    $mail->Username = 'electromagnetbrains@gmail.com';
-    $mail->Password = 'fuccrsbgmayfqqtl';
-    $mail->SMTPSecure = 'tls';
-    $mail->Port = 587;
-    $mail->setFrom('electromagnetbrains@gmail.com', 'Home E-Studies');
-    $mail->addAddress('edumaster201345@gmail.com');
-    $mail->isHTML(true);
-    $mail->Subject = $subject;
-    $mail->Body = "You have received a message from <b>$name</b> ($email)(Number:$phone):<br><br>$message";
-    $mail->send();
-} catch (Exception $e) {
-    echo "<script>alert('Mailer Error while sending to admin: {$mail->ErrorInfo}'); window.location.href='index.html';</script>";
-    exit;
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $to = "youremail@example.com"; // replace with your email or admin recipient
+    $name = htmlspecialchars($_POST["name"]);
+    $email = htmlspecialchars($_POST["email"]);
+    $phone = htmlspecialchars($_POST["phone"]);
+    $subject = htmlspecialchars($_POST["subject"]);
+    $message = htmlspecialchars($_POST["message"]);
+
+    $full_subject = "New Inquiry: $subject";
+    $headers = "From: $email\r\n";
+    $headers .= "Reply-To: $email\r\n";
+    $headers .= "Content-Type: text/html; charset=UTF-8\r\n";
+
+    $courseInfo = "
+      <h3>Thank you for contacting Success Sphere!</h3>
+      <p>Here are our available plans:</p>
+      <ul>
+        <li><strong>Basic Plan ($25):</strong> 10GB Space, 3 Domains, 20 Emails, No Live Support</li>
+        <li><strong>Standard Plan ($50):</strong> 50GB Space, 5 Domains, Unlimited Emails, No Live Support</li>
+        <li><strong>Premium Plan ($100):</strong> Unlimited Space, 30 Domains, Unlimited Emails, Live Support</li>
+      </ul>
+    ";
+
+    $body = "
+      <html>
+      <body>
+        <p><strong>Name:</strong> $name</p>
+        <p><strong>Email:</strong> $email</p>
+        <p><strong>Phone:</strong> $phone</p>
+        <p><strong>Subject:</strong> $subject</p>
+        <p><strong>Message:</strong><br/>$message</p>
+        <hr>
+        $courseInfo
+      </body>
+      </html>
+    ";
+
+    if (mail($to, $full_subject, $body, $headers)) {
+        echo "Message sent successfully!";
+    } else {
+        echo "Failed to send message. Please try again later.";
+    }
 }
-try {
-    $userMail = new PHPMailer(true);
-    $userMail->isSMTP();
-    $userMail->Host = 'smtp.gmail.com';
-    $userMail->SMTPAuth = true;
-    $userMail->Username = 'electromagnetbrains@gmail.com';
-    $userMail->Password = 'fuccrsbgmayfqqtl';
-    $userMail->SMTPSecure = 'tls';
-    $userMail->Port = 587;
-    $userMail->setFrom('edumaster201345@gmail.com', 'Home E-Studies');
-    $userMail->addAddress($email);
-    $userMail->isHTML(true);
-    $userMail->Subject = "Confirmation Email for $name's Submission";
-    $userMail->AddEmbeddedImage("mailimgae.jpg", "headerImage", "Header Image");
-    $userMail->Body = <<<HTML
-<html>
-  <head>
-    <style>
-      @import url("https://fonts.googleapis.com/css2?family=Baloo+Bhaijaan+2:wght@400..800&family=Playwrite+IT+Moderna:wght@100..400&display=swap");
-      body {
-        font-family: "Baloo Bhaijaan 2", cursive;
-        background-color: #fdf6f0;
-        color: #4b3832;
-        margin: 0;
-        padding: 0;
-        display: grid;
-        justify-content: center;
-      }
-      .card {
-        width: 60vw;
-        margin: 5vw auto;
-        border-radius: 1vw;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-      }
-      #imgil {
-        width: 100%;
-        border-radius: 1vw 1vw 0 0;
-      }
-      .content {
-        padding: 2.5vw;
-        background-color: rgba(255, 255, 255, 0.95);
-        border-radius: 0 0 1vw 1vw;
-      }
-      h2 {
-        font-size: 2.56vw;
-        color: #6d4c41;
-        text-align: center;
-        margin-top: 0;
-      }
-      p {
-        font-size: 16px;
-        line-height: 1.6;
-      }
-      ul {
-        list-style: none;
-        padding: 0;
-      }
-      ul li {
-        margin-bottom: 10px;
-      }
-    </style>
-  </head>
-  <body>
-    <div class="card">
-      <img src="cid:headerImage" alt="Header Image" id="imgil" />
-      <div class="content">
-        <p>Dear <strong>$name</strong>,</p>
-        <p>
-          We have received your message and we truly appreciate your interest.
-          Here is a summary of your submission:
-        </p>
-        <ul>
-          <li><strong>Name:</strong> $name</li>
-          <li><strong>Email:</strong> $email</li>
-          <li><strong>Phone:</strong> $phone</li>
-          <li><strong>Subject:</strong> $subject</li>
-          <li><strong>Message:</strong><br />$message</li>
-        </ul>
-        <p style="text-align: center">
-          ✨ We’ll get back to you as soon as possible ✨
-        </p>
-        <p>
-          Warm Regards,<br />Education Master (@gmail.com)
-        </p>
-      </div>
-    </div>
-  </body>
-</html>
-HTML;
-    $userMail->send();
-} catch (Exception $e) {
-    echo "<script>alert('Mailer Error while sending confirmation: {$userMail->ErrorInfo}'); window.location.href='index.html';</script>";
-    exit;
-}
-echo "<script>alert('Message sent successfully! A confirmation has been sent to your email.'); window.location.href='index.html';</script>";
 ?>

@@ -1,78 +1,44 @@
 <?php
-// Start session
-session_start();
+require 'vendor/autoload.php';
+require 'PHPMailer-master/src/PHPMailer.php';
+require 'PHPMailer-master/src/SMTP.php';
+require 'PHPMailer-master/src/Exception.php';
 
-// Database connection
-$host = "localhost";
-$user = "root";
-$password = "";
-$dbname = "edumasterpro";
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
 
-$conn = new mysqli($host, $user, $password, $dbname);
+$mail = new PHPMailer(true);
 
-// Check connection
-if ($conn->connect_error) {
-  die("Connection failed: " . $conn->connect_error);
-}
+try {
+    //Server settings
+    $mail->isSMTP();
+    $mail->Host       = 'smtp.gmail.com';  // Replace with your SMTP server
+    $mail->SMTPAuth   = true;
+    $mail->Username   = 'edumaster201345@gmail.com';    // SMTP username
+    $mail->Password   = 'bcai cqgb dovk mwuu';      // SMTP password
+    $mail->SMTPSecure = 'tls';
+    $mail->Port       = 587;
 
-// Handle registration form submission
-if ($_SERVER["REQUEST_METHOD"] === "POST") {
-  // Sanitize input
-  $name = trim($_POST["name"]);
-  $email = trim($_POST["email"]);
-  $password = trim($_POST["password"]);
-  $confirm_password = trim($_POST["confirm_password"]);
+    //Recipients
+    $mail->setFrom('edumaster201345@gmail.com', 'Success Sphere');
+    $mail->addAddress($_POST['email'], $_POST['fullname']); 
 
-  // Validate inputs
-  if (empty($name) || empty($email) || empty($password)) {
-    $_SESSION['error'] = "All fields are required.";
-    header("Location: ../register.html");
-    exit;
-  }
+    // Content
+    $mail->isHTML(true);
+    $mail->Subject = 'Registration Confirmation - Success Sphere';
+    $mail->Body    = 'Thank you for registering with Success Sphere. <br><br>We are excited to have ' . htmlspecialchars($_POST['fullname']) . ' on board!<br><br> Here are your Credentials: (email: ' . htmlspecialchars($_POST['email']) . ', password: ' . htmlspecialchars($_POST['password']) . ')<br><br> Here are our available plans:<br>
+    <ul>
+        <li><strong>Basic Plan (₹25):</strong> 10GB Space, 3 Domains, 20 Emails, No Live Support</li>
+        <li><strong>Standard Plan (₹50):</strong> 50GB Space, 5 Domains, Unlimited Emails, No Live Support</li>
+        <li><strong>Premium Plan (₹100):</strong> Unlimited Space, 30 Domains, Unlimited Emails, Live Support</li>
+    </ul>
+    <br>Feel free to reach out if you have any questions or need assistance.<br><br><br>Thanks and Regards,<br>Success Sphere Team';
 
-  if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-    $_SESSION['error'] = "Invalid email format.";
-    header("Location: ../register.html");
-    exit;
-  }
-
-  if ($password !== $confirm_password) {
-    $_SESSION['error'] = "Passwords do not match.";
-    header("Location: ../register.html");
-    exit;
-  }
-
-  // Check if email already exists
-  $stmt = $conn->prepare("SELECT id FROM users WHERE email = ?");
-  $stmt->bind_param("s", $email);
-  $stmt->execute();
-  $stmt->store_result();
-
-  if ($stmt->num_rows > 0) {
-    $_SESSION['error'] = "Email already registered.";
-    header("Location: ../register.html");
-    exit;
-  }
-  $stmt->close();
-
-  // Hash password
-  $hashed_password = password_hash($password, PASSWORD_DEFAULT);
-
-  // Insert user
-  $stmt = $conn->prepare("INSERT INTO users (name, email, password) VALUES (?, ?, ?)");
-  $stmt->bind_param("sss", $name, $email, $hashed_password);
-
-  if ($stmt->execute()) {
-    $_SESSION['success'] = "Registration successful! You can now log in.";
-    header("Location: ../login.html");
-  } else {
-    $_SESSION['error'] = "Registration failed. Please try again.";
-    header("Location: ../register.html");
-  }
-
-  $stmt->close();
-  $conn->close();
-} else {
-  header("Location: ../register.html");
+    $mail->send();
+    echo '✅ Message has been sent to ' . htmlspecialchars($_POST['email']) . '!';
+    // Optionally, you can redirect to a success page or display a success message
+} catch (Exception $e) {
+    echo "❌ Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
 }
 ?>
+
