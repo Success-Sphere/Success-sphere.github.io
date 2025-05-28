@@ -16,9 +16,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       <h3>Thank you for contacting Success Sphere!</h3>
       <p>Here are our available plans:</p>
       <ul>
-        <li><strong>Basic Plan ($25):</strong> 10GB Space, 3 Domains, 20 Emails, No Live Support</li>
-        <li><strong>Standard Plan ($50):</strong> 50GB Space, 5 Domains, Unlimited Emails, No Live Support</li>
-        <li><strong>Premium Plan ($100):</strong> Unlimited Space, 30 Domains, Unlimited Emails, Live Support</li>
+        <li><strong>Basic Plan ($25):</strong> Class Nursery to Class 5, 3 Domains, 20 Emails, No Live Support</li>
+        <li><strong>Standard Plan ($50):</strong> Class 6 to Class 10, 5 Domains, Unlimited Emails, No Live Support</li>
+        <li><strong>Premium Plan ($100):</strong> Class 11 to Class 12, Unlimited Domains, Unlimited Emails, Live Support</li>
       </ul>
     ";
 
