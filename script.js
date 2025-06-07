@@ -192,3 +192,48 @@ app.get("/", (req, res) => {
 app.listen(PORT, () => {
   console.log(`Server running at http://localhost:${PORT}`);
 });
+function validateForm(form) {
+  const inputs = form.querySelectorAll("input[required]");
+  let isValid = true;
+
+  inputs.forEach((input) => {
+    if (!input.value.trim()) {
+      isValid = false;
+      input.classList.add("error");
+      input.nextElementSibling.textContent = "This field is required.";
+    } else {
+      input.classList.remove("error");
+      input.nextElementSibling.textContent = "";
+    }
+  });
+  fetch("register-alt.php", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded",
+    },
+    body: new URLSearchParams({
+      email: document.querySelector("#email").value,
+      username: document.querySelector("#username").value,
+      password: document.querySelector("#password").value,
+    }),
+  });
+  if (isValid) {
+    // Additional validation logic can be added here
+    const email = form.querySelector('input[name="email"]');
+    const password = form.querySelector('input[name="password"]');
+
+    if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value)) {
+      isValid = false;
+      email.classList.add("error");
+      email.nextElementSibling.textContent = "Please enter a valid email.";
+    }
+
+    if (password && password.value.length < 6) {
+      isValid = false;
+      password.classList.add("error");
+      password.nextElementSibling.textContent =
+        "Password must be at least 6 characters long.";
+    }
+  }
+  return isValid;
+}

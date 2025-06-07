@@ -1,0 +1,54 @@
+{
+    "users": [
+        {
+            "id": 1,
+            "username": "successuser",
+            "email": "successuser@example.com",
+            "password_hash": "hashed_password_here",
+            "fullName": "Success Sphere",
+            "registeredAt": "2025-06-07T13:00:00Z",
+            "role": "user",
+            "preferences": {
+                "theme": "dark",
+                "notifications": true
+            }
+        },
+        {
+            "id": 2,
+            "username": "admin",
+            "email": "admin@successsphere.com",
+            "password_hash": "hashed_admin_password",
+            "fullName": "Admin User",
+            "registeredAt": "2025-01-15T09:30:00Z",
+            "role": "admin",
+            "preferences": {
+                "theme": "light",
+                "notifications": false
+            }
+        }
+    ],
+    "0": {
+        "fullname": "Biswajeet Chakra ",
+        "email": "biswajeet.chakra2012@gmail.com",
+        "phone": "7319749216",
+        "password": "$2y$12$pe.t5HJpApO2Fk7AV.NvEuL15Xgx8p8aUH24iuwSpiVMoMoZdLr4y"
+    },
+    "1": {
+        "fullname": "Biswajeet Chakra ",
+        "email": "success-sphere2012@gmail.com",
+        "phone": "7319749216",
+        "password": "$2y$12$MtDvPfQcd1dpdw6Z3xF2geNoc4DuQniHr7IVNs2ZWShm7IciORGpS"
+    },
+    "2": {
+        "fullname": "Biswajeet Chakra ",
+        "email": "succes-sphere2012@gmail.com",
+        "phone": "7319749216",
+        "password": "$2y$12$cZu.xU4YX7egiJ3qTJVe6ueOwxM38CEu3Hbo9aMq.hoR0JuyS\/jzu"
+    },
+    "3": {
+        "fullname": "Biswajeet Chakra ",
+        "email": "succss-sphere2012@gmail.com",
+        "phone": "7319749216",
+        "password": "$2y$12$YpW4jWxP1oJqiUZDXXZqaOfBwDhfKNTZuDoUBluyQTSKii.67ZIam"
+    }
+}
