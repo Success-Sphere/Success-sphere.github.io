@@ -25,6 +25,40 @@ document.addEventListener("click", (e) => {
   }
 });
 
+function handleCredentialResponse(response) {
+  const data = jwt_decode(response.credential);
+  localStorage.setItem("user", JSON.stringify(data));
+  showUserProfile();
+  window.location.href = "index.html";
+}
+
+function showUserProfile() {
+  const user = JSON.parse(localStorage.getItem("user"));
+  if (user) {
+    document.getElementById("auth-area").innerHTML = `
+      <div class="user-profile" onclick="toggleUserMenu()">
+        <img src="${user.picture}" alt="User" class="user-avatar">
+      </div>
+      <div id="user-menu" class="user-menu" style="display: none;">
+        <p>${user.name}</p>
+        <button onclick="signOut()">Sign Out</button>
+      </div>
+    `;
+  }
+}
+
+function toggleUserMenu() {
+  const menu = document.getElementById("user-menu");
+  menu.style.display = menu.style.display === "block" ? "none" : "block";
+}
+
+function signOut() {
+  localStorage.removeItem("user");
+  location.reload();
+}
+
+window.onload = showUserProfile;
+
 // Close Sidebar on Escape Key Press
 document.addEventListener("keydown", (e) => {
   if (e.key === "Escape") {
