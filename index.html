@@ -10,55 +10,56 @@
       href="https://fonts.googleapis.com/css2?family=Baloo+Bhaijaan+2:wght@400;600;700&display=swap"
       rel="stylesheet"
     />
+    <script src="script.js" defer></script>
+    <script src="auth.js" defer></script>
   </head>
   <body>
     <!-- Header -->
-<div id="mobileSidebar" class="sidebar">
-  <a href="javascript:void(0)" class="closebtn" onclick="toggleSidebar()">&times;</a>
-  <a href="index.html">Home</a>
-  <a href="about.html">About</a>
-  <a href="courses.html">Courses</a>
-  <a href="blog.html">Blog</a>
-  <a href="contact.html">Contact</a>
-  <a href="login.html">Login</a>
-  <a href="register.html">Register</a>
-</div>
+    <div id="mobileSidebar" class="sidebar">
+      <a href="javascript:void(0)" class="closebtn" onclick="toggleSidebar()"
+        >&times;</a
+      >
+      <a href="index.html">Home</a>
+      <a href="about.html">About</a>
+      <a href="courses.html">Courses</a>
+      <a href="blog.html">Blog</a>
+      <a href="contact.html">Contact</a>
+      <a href="login.html">Login</a>
+      <a href="register.html">Register</a>
+    </div>
 
-<!-- Top Bar with Menu Icon -->
-<div class="topbar">
-  <span class="menu-icon" onclick="toggleSidebar()">&#9776;</span>
-  <h1 class="logo">Success Sphere</h1>
-</div>
-<div id="auth-area" class="auth-right">
-  <div id="g_id_onload"
-       data-client_id="YOUR_GOOGLE_CLIENT_ID"
-       data-context="signin"
-       data-callback="handleCredentialResponse"
-       data-auto_prompt="false">
-  </div>
-  <div class="g_id_signin"
-       data-type="icon"
-       data-shape="circle"
-       data-theme="filled_black"
-       data-text="signin_with"
-       data-size="large">
-  </div>
-</div>
-
-    <!-- Hero Section -->
+    <!-- Top Bar with Menu Icon -->
+    <div class="topbar">
+      <span class="menu-icon" onclick="toggleSidebar()">&#9776;</span>
+      <h1 class="logo">Success Sphere</h1>
+    </div>
+    <div id="auth-area" class="auth-right">
+      <div
+        id="g_id_onload"
+        data-client_id="YOUR_GOOGLE_CLIENT_ID"
+        data-context="signin"
+        data-callback="handleCredentialResponse"
+        data-auto_prompt="false"
+      ></div>
+      <div
+        class="g_id_signin"
+        data-type="icon"
+        data-shape="circle"
+        data-theme="filled_black"
+        data-text="signin_with"
+        data-size="large"
+      ></div>
+    </div>
     <header class="hero">
-
-        <div class="hero-text">
-          <h1>Professional Excellence Through Education</h1>
-          <p><h3>
-            Unlock your potential with world-class instructors and a dynamic
-            learning platform.
-          </p></h3>
-          <a href="register.html" class="btn btn-primary">Get Started</a>
-        </div>
+      <div class="hero-text">
+        <h1>Professional Excellence Through Education</h1>
+        <p>
+          Unlock your potential with world-class instructors and a dynamic
+          learning platform.
+        </p>
+        <a href="register.html" class="btn btn-primary">Get Started</a>
       </div>
     </header>
-    <!-- Feature Courses -->
     <section class="featured-courses">
       <div class="container">
         <h2 class="section-title">🌟 Featured Courses</h2>
@@ -72,7 +73,6 @@
               <a href="course-details.html" class="btn-sm">Learn More</a>
             </div>
           </div>
-
           <div class="course-card">
             <img src="course2.jpg" alt="Course 2" />
             <div class="course-info">
@@ -82,7 +82,6 @@
               <a href="course-details.html" class="btn-sm">Learn More</a>
             </div>
           </div>
-
           <div class="course-card">
             <img src="course3.jpg" alt="Course 3" />
             <div class="course-info">
@@ -95,8 +94,6 @@
         </div>
       </div>
     </section>
-
-    <!-- Why Choose Us -->
     <section class="why-choose">
       <div class="container">
         <h2 class="section-title">💡 Why Choose Success Sphere?</h2>
@@ -124,18 +121,16 @@
         </div>
       </div>
     </section>
-
-    <!-- Testimonials -->
     <section class="testimonials">
       <div class="container">
         <h2 class="section-title">💬 What Our Students Say</h2>
         <div class="testimonial-grid">
           <div class="testimonial-card">
             <p>
-              "Success Sphere helped me crack NEET with confidence. The mock tests
-              and mentors are amazing!"
+              "Success Sphere helped me crack NEET with confidence. The mock
+              tests and mentors are amazing!"
             </p>
-            <h4>- Anwesh Arpan Behera</h4>
+            <h4>- Anwesha Arpana Behera</h4>
             <span>NEET Topper 2024</span>
           </div>
           <div class="testimonial-card">
@@ -157,8 +152,6 @@
         </div>
       </div>
     </section>
-
-    <!-- CTA Section -->
     <section class="cta">
       <div class="cta-content">
         <h2>Start your journey today</h2>
@@ -166,8 +159,6 @@
       </div>
     </section>
     <br /><br />
-
-    <!-- Footer -->
     <footer>
       <div class="footer">
         <div class="footer-container">
@@ -220,7 +211,5 @@
         </div>
       </div>
     </footer>
-
- <script src="script.js"></script>
   </body>
 </html>

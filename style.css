@@ -479,6 +479,22 @@ section {
   margin-top: 40px;
   font-size: 0.85rem;
 }
+.btn-google {
+  background-color: #4285f4;
+  color: white;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 4px;
+  font-weight: bold;
+  cursor: pointer;
+}
+.btn-google:hover {
+  background-color: #357ae8;
+}
+.google-logo {
+  width: 1.5vw;
+  height: 1.5vw;
+}
 @media (max-width: 768px) {
   .hero h1 {
     font-size: 2rem;
