@@ -1,0 +1,8 @@
+{
+  "name": "success-sphere",
+  "version": "1.0.0",
+  "scripts": {
+    "start": "php -S localhost:8000 & browser-sync start --proxy localhost:8000 --files '**/*.*'"
+  },
+  "dependencies": {}
+}

@@ -212,5 +212,45 @@
         </div>
       </div>
     </footer>
+    <script>
+      const authArea = document.getElementById("auth-area");
+      const firstName = localStorage.getItem("ssphere_name") || "User";
+      const email = localStorage.getItem("ssphere_email") || "user@example.com";
+
+      if (firstName) {
+        authArea.innerHTML = `
+          <div class="user-circle" onclick="toggleUserMenu()">
+            ${firstName.charAt(0).toUpperCase()}
+          </div>
+          <div id="user-menu" class="user-menu" style="display: none;">
+            <div class="user-menu-header">
+              <div class="user-initial-circle">${firstName
+                .charAt(0)
+                .toUpperCase()}</div>
+              <div class="user-info-text">
+                <p class="user-name">${firstName}</p>
+                <p class="user-email">${email}</p>
+              </div>
+            </div>
+            <hr />
+            <div class="user-menu-links">
+              <a href="dashboard.html" class="menu-link">My Profile</a>
+              <button onclick="logoutUser()" class="menu-link logout-btn">Logout</button>
+            </div>
+          </div>
+        `;
+      }
+
+      function toggleUserMenu() {
+        const menu = document.getElementById("user-menu");
+        menu.style.display = menu.style.display === "block" ? "none" : "block";
+      }
+
+      function logoutUser() {
+        localStorage.removeItem("ssphere_name");
+        localStorage.removeItem("ssphere_email");
+        location.reload();
+      }
+    </script>
   </body>
 </html>

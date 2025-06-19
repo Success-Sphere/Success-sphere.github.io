@@ -87,6 +87,18 @@
         </form>
       </div>
     </section>
+    <script>
+      document.querySelector("form").addEventListener("submit", function () {
+        const fullname = document.getElementById("fullname").value.trim();
+        const email = document.getElementById("email").value.trim();
+        if (fullname) {
+          localStorage.setItem("ssphere_name", fullname.split(" ")[0]);
+        }
+        if (email) {
+          localStorage.setItem("ssphere_email", email);
+        }
+      });
+    </script>
 
     <!-- Footer -->
     <footer class="footer">

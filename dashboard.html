@@ -2,8 +2,8 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+    <title>Dashboard - Success Sphere</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Dashboard</title>
     <link rel="stylesheet" href="style.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link
@@ -13,5 +13,46 @@
     <script src="script.js" defer></script>
     <script src="auth.js" defer></script>
   </head>
-  <body></body>
+  <body>
+    <!-- Sidebar -->
+    <div id="mobileSidebar" class="sidebar">
+      <a href="javascript:void(0)" class="closebtn" onclick="toggleSidebar()"
+        >&times;</a
+      >
+      <a href="index.html">Home</a>
+      <a href="courses.html">Courses</a>
+      <a href="dashboard.html">Dashboard</a>
+      <a href="#" onclick="logout()">Logout</a>
+    </div>
+
+    <!-- Topbar -->
+    <div class="topbar">
+      <span class="menu-icon" onclick="toggleSidebar()">&#9776;</span>
+      <h1 class="logo">Success Sphere</h1>
+      <div id="auth-area" class="auth-right">
+        <!-- Filled by auth.js -->
+      </div>
+    </div>
+
+    <!-- Dashboard Content -->
+    <section class="auth-section">
+      <div class="auth-container">
+        <h2>Welcome to Your Dashboard</h2>
+        <p id="welcome-message">Loading your profile...</p>
+      </div>
+    </section>
+
+    <script>
+      // Show user name from localStorage (Google Sign-In or form-based)
+      const userData = JSON.parse(localStorage.getItem("ssphere_user"));
+
+      if (!userData || !userData.firstName) {
+        // If not logged in, redirect to homepage
+        window.location.href = "index.html";
+      } else {
+        document.getElementById("welcome-message").textContent =
+          "Hello, " + userData.firstName + "! 👋";
+      }
+    </script>
+  </body>
 </html>

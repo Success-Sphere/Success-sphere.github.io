@@ -1,4 +1,4 @@
-// Sidebar Toggle
+// === Sidebar Toggle ===
 function toggleSidebar() {
   const sidebar = document.getElementById("mobileSidebar");
   sidebar.classList.toggle("open");
@@ -11,12 +11,12 @@ document.querySelectorAll(".sidebar a").forEach((link) => {
   });
 });
 
-// Close Sidebar on Outside Click (Mobile Only)
+// Close Sidebar on Outside Click
 document.addEventListener("click", (e) => {
   const sidebar = document.getElementById("mobileSidebar");
   const topbar = document.querySelector(".topbar");
-
   if (
+    sidebar &&
     !sidebar.contains(e.target) &&
     !topbar.contains(e.target) &&
     sidebar.classList.contains("open")
@@ -24,6 +24,50 @@ document.addEventListener("click", (e) => {
     sidebar.classList.remove("open");
   }
 });
+
+// === Circular User Button Logic ===
+window.addEventListener("DOMContentLoaded", () => {
+  const authArea = document.getElementById("auth-area");
+  if (!authArea) return;
+
+  const firstName = localStorage.getItem("ssphere_name") || "User";
+  const email = localStorage.getItem("ssphere_email") || "user@example.com";
+
+  authArea.innerHTML = `
+    <div class="user-circle" onclick="toggleUserMenu()">
+      ${firstName.charAt(0).toUpperCase()}
+    </div>
+    <div id="user-menu" class="user-menu" style="display: none;">
+      <div class="user-menu-header">
+        <div class="user-initial-circle">${firstName
+          .charAt(0)
+          .toUpperCase()}</div>
+        <div class="user-info-text">
+          <p class="user-name">${firstName}</p>
+          <p class="user-email">${email}</p>
+        </div>
+      </div>
+      <hr />
+      <div class="user-menu-links">
+        <a href="dashboard.html" class="menu-link">My Profile</a>
+        <button onclick="logoutUser()" class="menu-link logout-btn">Logout</button>
+      </div>
+    </div>
+  `;
+});
+
+function toggleUserMenu() {
+  const menu = document.getElementById("user-menu");
+  if (menu) {
+    menu.style.display = menu.style.display === "block" ? "none" : "block";
+  }
+}
+
+function logoutUser() {
+  localStorage.removeItem("ssphere_name");
+  localStorage.removeItem("ssphere_email");
+  location.reload();
+}
 
 function handleCredentialResponse(response) {
   const data = jwt_decode(response.credential);
