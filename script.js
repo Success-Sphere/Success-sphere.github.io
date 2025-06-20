@@ -3,6 +3,10 @@ function toggleSidebar() {
   const sidebar = document.getElementById("mobileSidebar");
   sidebar.classList.toggle("open");
 }
+function untoggleSidebar() {
+  const sidebar = document.getElementById("mobileSidebar");
+  sidebar.classList.remove("open");
+}
 
 // Close Sidebar on Link Click
 document.querySelectorAll(".sidebar a").forEach((link) => {

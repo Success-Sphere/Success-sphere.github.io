@@ -14,24 +14,22 @@
     <script src="auth.js" defer></script>
   </head>
   <body>
-    <!-- Sidebar -->
+    <!-- Header -->
     <div id="mobileSidebar" class="sidebar">
-      <a href="javascript:void(0)" class="closebtn" onclick="toggleSidebar()"
-        >&times;</a
-      >
+      <a class="closebtn" onclick="untoggleSidebar()">&times;</a>
       <a href="index.html">Home</a>
+      <a href="about.html">About</a>
       <a href="courses.html">Courses</a>
-      <a href="dashboard.html">Dashboard</a>
-      <a href="#" onclick="logout()">Logout</a>
+      <a href="blog.html">Blog</a>
+      <a href="contact.html">Contact</a>
+      <a href="login.html">Login</a>
+      <a href="register.html">Register</a>
     </div>
 
-    <!-- Topbar -->
+    <!-- Top Bar with Menu Icon -->
     <div class="topbar">
       <span class="menu-icon" onclick="toggleSidebar()">&#9776;</span>
       <h1 class="logo">Success Sphere</h1>
-      <div id="auth-area" class="auth-right">
-        <!-- Filled by auth.js -->
-      </div>
     </div>
 
     <!-- Dashboard Content -->
