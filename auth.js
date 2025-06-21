@@ -1,67 +1,62 @@
-// --- Firebase Initialization (you already have this) ---
-import { initializeApp } from "https://www.gstatic.com/firebasejs/11.9.0/firebase-app.js";
-import {
-  getAuth,
-  GoogleAuthProvider,
-  signInWithPopup,
-  signOut,
-  onAuthStateChanged,
-} from "https://www.gstatic.com/firebasejs/11.9.0/firebase-auth.js";
+// auth.js
 
-// Firebase config (your values)
-const firebaseConfig = {
-  apiKey: "AIzaSyAr06yo3hUeGDsgtp_g3VwHyqLvdScYcRw",
-  authDomain: "successsphere-b1559.firebaseapp.com",
-  projectId: "successsphere-b1559",
-  storageBucket: "successsphere-b1559.firebasestorage.app",
-  messagingSenderId: "128589606608",
-  appId: "1:128589606608:web:0c4b9f5e503957947278d5",
-  measurementId: "G-C6LCK9KEHP",
+window.handleCredentialResponse = (response) => {
+  const data = jwt_decode(response.credential);
+
+  const userData = {
+    firstName: data.given_name || "User",
+    email: data.email,
+    picture: data.picture || "",
+  };
+
+  localStorage.setItem("ssphere_user", JSON.stringify(userData));
+  localStorage.setItem("ssphere_name", userData.firstName);
+  localStorage.setItem("ssphere_email", userData.email);
+
+  window.location.href = "dashboard.html";
 };
 
-// Init Firebase
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const provider = new GoogleAuthProvider();
-
-window.handleCredentialResponse = async function () {
-  try {
-    const result = await signInWithPopup(auth, provider);
-    const user = result.user;
-    localStorage.setItem("ssphere_user", JSON.stringify(user));
-    window.location.href = "dashboard.html"; // ✅ on success
-  } catch (error) {
-    console.error("Login failed:", error);
-    alert("Google Sign-In failed.");
-    window.location.href = "index.html"; // ✅ on failure
+// Just redirect logic if needed (optional cleanup)
+window.onload = function () {
+  const userData = JSON.parse(localStorage.getItem("ssphere_user"));
+  if (userData && userData.firstName) {
+    const authArea = document.getElementById("auth-area");
+    if (authArea) {
+      authArea.innerHTML = `
+        <div class="user-circle" onclick="toggleUserMenu()">
+          ${userData.firstName.charAt(0).toUpperCase()}
+        </div>
+        <div id="user-menu" class="user-menu" style="display: none;">
+          <div class="user-menu-header">
+            <div class="user-initial-circle">${userData.firstName
+              .charAt(0)
+              .toUpperCase()}</div>
+            <div class="user-info-text">
+              <p class="user-name">${userData.firstName}</p>
+              <p class="user-email">${userData.email}</p>
+            </div>
+          </div>
+          <hr />
+          <div class="user-menu-links">
+            <a href="dashboard.html" class="menu-link">My Profile</a>
+            <button onclick="logoutUser()" class="menu-link logout-btn">Logout</button>
+          </div>
+        </div>
+      `;
+    }
   }
 };
-// --- Logout Function ---
-window.logout = function () {
-  signOut(auth)
-    .then(() => {
-      localStorage.removeItem("ssphere_user");
-      window.location.href = "index.html";
-    })
-    .catch((error) => {
-      console.error("Logout error:", error);
-    });
-};
 
-// --- Auth Guard (for dashboard.html) ---
-if (window.location.pathname.endsWith("dashboard.html")) {
-  onAuthStateChanged(auth, (user) => {
-    if (!user) {
-      window.location.href = "index.html"; // not logged in
-    } else {
-      const infoBox = document.createElement("div");
-      infoBox.className = "user-info";
-      infoBox.innerHTML = `
-        <p>Welcome, ${user.displayName}</p>
-        <p>Email: ${user.email}</p>
-        <button onclick="logout()">Logout</button>
-      `;
-      document.body.prepend(infoBox);
-    }
-  });
+function logoutUser() {
+  localStorage.removeItem("ssphere_user");
+  localStorage.removeItem("ssphere_name");
+  localStorage.removeItem("ssphere_email");
+  location.href = "index.html";
+}
+
+function toggleUserMenu() {
+  const menu = document.getElementById("user-menu");
+  if (menu) {
+    menu.style.display = menu.style.display === "block" ? "none" : "block";
+  }
 }
