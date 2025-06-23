@@ -12,7 +12,66 @@
     />
     <script src="script.js" defer></script>
     <script src="auth.js" defer></script>
+    <style>
+      /* Profile Circle & Dropdown Styling */
+      .user-profile {
+        position: absolute;
+        top: 10px;
+        right: 20px;
+        z-index: 10;
+      }
+
+      .profile-circle {
+        background-color: #4caf50;
+        color: white;
+        width: 40px;
+        height: 40px;
+        font-weight: bold;
+        font-size: 20px;
+        border-radius: 50%;
+        text-align: center;
+        line-height: 40px;
+        cursor: pointer;
+      }
+
+      .profile-dropdown {
+        display: none;
+        position: absolute;
+        top: 45px;
+        right: 0;
+        background: white;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        padding: 10px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+        min-width: 200px;
+      }
+
+      .profile-dropdown p {
+        margin: 5px 0;
+        font-size: 14px;
+      }
+
+      .profile-dropdown hr {
+        margin: 8px 0;
+      }
+
+      .profile-dropdown button {
+        width: 100%;
+        padding: 6px;
+        border: none;
+        background: #f44336;
+        color: white;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+
+      .profile-dropdown button:hover {
+        background: #d32f2f;
+      }
+    </style>
   </head>
+
   <body>
     <!-- Header -->
     <div id="mobileSidebar" class="sidebar">
@@ -32,6 +91,17 @@
       <h1 class="logo">Success Sphere</h1>
     </div>
 
+    <!-- Top-Right Profile Section -->
+    <div class="user-profile" id="user-profile">
+      <div class="profile-circle" id="profile-circle">?</div>
+      <div class="profile-dropdown" id="profile-dropdown">
+        <p id="profile-name">Name</p>
+        <p id="profile-email">Email</p>
+        <hr />
+        <button onclick="logout()">Sign Out</button>
+      </div>
+    </div>
+
     <!-- Dashboard Content -->
     <section class="auth-section">
       <div class="auth-container">
@@ -40,17 +110,55 @@
       </div>
     </section>
 
+    <!-- Profile Script -->
     <script>
-      // Show user name from localStorage (Google Sign-In or form-based)
-      const userData = JSON.parse(localStorage.getItem("ssphere_user"));
+      const nameData = localStorage.getItem("ssphere_name");
+      const emailData = localStorage.getItem("ssphere_email");
 
-      if (!userData || !userData.firstName) {
-        // If not logged in, redirect to homepage
+      if (!nameData || !emailData) {
         window.location.href = "index.html";
       } else {
+        const nameObj = JSON.parse(nameData);
+        const emailObj = JSON.parse(emailData);
+
+        // Show welcome message
         document.getElementById("welcome-message").textContent =
-          "Hello, " + userData.firstName + "! 👋";
+          "Hello, " + nameObj.fullname + "! 👋";
+
+        // Set circle initials (first letter of first and last name)
+        const initials = nameObj.fullname
+          .split(" ")
+          .map((word) => word.charAt(0).toUpperCase())
+          .join("")
+          .substring(0, 2);
+
+        document.getElementById("profile-circle").textContent = initials;
+        document.getElementById("profile-name").textContent = nameObj.fullname;
+        document.getElementById("profile-email").textContent = emailObj.email;
       }
+
+      // Toggle dropdown
+      document
+        .getElementById("profile-circle")
+        .addEventListener("click", () => {
+          const dropdown = document.getElementById("profile-dropdown");
+          dropdown.style.display =
+            dropdown.style.display === "block" ? "none" : "block";
+        });
+
+      // Logout
+      function logout() {
+        localStorage.removeItem("ssphere_name");
+        localStorage.removeItem("ssphere_email");
+        window.location.href = "index.html";
+      }
+
+      // Optional: Close dropdown when clicking outside
+      window.addEventListener("click", function (e) {
+        if (!document.getElementById("user-profile").contains(e.target)) {
+          document.getElementById("profile-dropdown").style.display = "none";
+        }
+      });
     </script>
   </body>
 </html>

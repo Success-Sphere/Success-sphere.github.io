@@ -8,17 +8,23 @@ window.handleCredentialResponse = (response) => {
     email: data.email,
     picture: data.picture || "",
   };
-
-  localStorage.setItem("ssphere_user", JSON.stringify(userData));
-  localStorage.setItem("ssphere_name", userData.firstName);
-  localStorage.setItem("ssphere_email", userData.email);
+  localStorage.setItem(
+    "ssphere_name",
+    userData.fullName,
+    JSON.stringify(userData)
+  );
+  localStorage.setItem(
+    "ssphere_email",
+    userData.email,
+    JSON.stringify(userData)
+  );
 
   window.location.href = "dashboard.html";
 };
 
 // Just redirect logic if needed (optional cleanup)
 window.onload = function () {
-  const userData = JSON.parse(localStorage.getItem("ssphere_user"));
+  const userData = JSON.parse(localStorage.getItem("ssphere_name")) || {};
   if (userData && userData.firstName) {
     const authArea = document.getElementById("auth-area");
     if (authArea) {
@@ -28,11 +34,11 @@ window.onload = function () {
         </div>
         <div id="user-menu" class="user-menu" style="display: none;">
           <div class="user-menu-header">
-            <div class="user-initial-circle">${userData.firstName
+            <div class="user-initial-circle">${userData.fullName
               .charAt(0)
               .toUpperCase()}</div>
             <div class="user-info-text">
-              <p class="user-name">${userData.firstName}</p>
+              <p class="user-name">${userData.fullName}</p>
               <p class="user-email">${userData.email}</p>
             </div>
           </div>
