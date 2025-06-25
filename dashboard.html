@@ -5,6 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Dashboard - Success Sphere</title>
     <link rel="stylesheet" href="style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Parisienne&display=swap"
+      rel="stylesheet"
+    />
+    <script src="script.js" defer></script>
+    <script src="auth.js" type="module"></script>
+    <script src="get-auth.js" defer></script>
+
     <style>
       body {
         font-family: "Segoe UI", sans-serif;
@@ -13,7 +23,7 @@
         background: #f5f7fb;
         display: flex;
         flex-direction: column;
-        min-height: 100vh;
+        min-height: 10vh;
       }
 
       .topbar {
@@ -21,36 +31,67 @@
         color: white;
         padding: 1rem 2rem;
         display: flex;
-        justify-content: space-between;
+        justify-content: space-between; /* space between logo & profile */
         align-items: center;
+        position: relative;
       }
 
-      .dashboard-content {
+      .topbar h1.logo {
+        font-family: "Parisienne", cursive;
+        font-size: 2rem;
+        margin: 0;
+        flex-grow: 1; /* This pushes the logo between the sidebar and profile */
+      }
+
+      .auth-right {
+        margin-left: auto;
+        position: relative;
+      }
+
+      .logo {
+        font-family: "Parisienne", cursive;
+        font-size: 2rem;
+      }
+
+      .menu-icon {
+        font-size: 1.8rem;
+        cursor: pointer;
+      }
+
+      main {
         flex: 1;
         display: flex;
+        flex-direction: column;
         justify-content: center;
         align-items: center;
         text-align: center;
-        padding: 2rem;
+        padding: 3rem 1rem;
       }
 
-      .dashboard-box {
-        background: white;
-        padding: 2rem 3rem;
-        border-radius: 12px;
-        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
-      }
-
-      .dashboard-box h2 {
-        margin-top: 0;
+      main h2 {
+        font-size: 2.2rem;
         color: #003366;
+        margin-bottom: 1rem;
+      }
+
+      main p {
+        font-size: 1.1rem;
+        color: #333;
+        max-width: 600px;
+        margin-bottom: 1.5rem;
+      }
+
+      main a {
+        text-decoration: none;
+        color: #007bff;
+        font-weight: bold;
+        font-size: 1rem;
       }
 
       .user-circle {
         background: #007bff;
         color: white;
         border-radius: 50%;
-        display: inline-block;
         width: 40px;
         height: 40px;
         text-align: center;
@@ -62,31 +103,41 @@
       .user-menu {
         position: absolute;
         top: 70px;
-        right: 2rem;
+        right: 1.5rem;
         background: white;
         border: 1px solid #ccc;
         padding: 1rem;
-        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         display: none;
-        z-index: 1000;
-        min-width: 200px;
+        min-width: 220px;
+        z-index: 999;
       }
 
       .user-menu-header {
-        text-align: left;
-        margin-bottom: 0.5rem;
+        margin-bottom: 1rem;
       }
 
       .user-initial-circle {
         width: 40px;
         height: 40px;
-        border-radius: 50%;
-        background-color: #007bff;
+        background: #007bff;
         color: white;
+        border-radius: 50%;
         text-align: center;
         line-height: 40px;
         font-weight: bold;
         margin-bottom: 0.5rem;
+      }
+
+      .user-name {
+        font-weight: bold;
+        margin: 0;
+      }
+
+      .user-email {
+        font-size: 0.9rem;
+        color: #666;
+        margin: 0;
       }
 
       .user-menu-links {
@@ -112,24 +163,34 @@
     </style>
   </head>
   <body>
-    <div class="topbar">
-      <h1>Dashboard</h1>
-      <div id="auth-area"></div>
+    <!-- Sidebar -->
+    <div id="mobileSidebar" class="sidebar">
+      <a class="closebtn" onclick="untoggleSidebar()">&times;</a>
+      <a href="index.html">Home</a>
+      <a href="about.html">About</a>
+      <a href="courses.html">Courses</a>
+      <a href="blog.html">Blog</a>
+      <a href="contact.html">Contact</a>
+      <a href="login.html">Login</a>
+      <a href="register.html">Register</a>
     </div>
 
-    <div class="dashboard-content">
-      <div class="dashboard-box">
-        <h2>👋 Welcome, <span id="user-name">User</span>!</h2>
-        <p>This is your personalized dashboard on Success Sphere.</p>
-        <p>
-          Here you can view your profile, track your progress, and access your
-          learning tools.
-        </p>
-        <a href="index.html" style="color: #007bff; text-decoration: none"
-          >← Back to Home</a
-        >
-      </div>
+    <!-- Topbar -->
+    <div class="topbar">
+      <span class="menu-icon" onclick="toggleSidebar()">&#9776;</span>
+      <h1 class="logo">Success Sphere</h1>
+      <div id="auth-area" class="auth-right"></div>
     </div>
+
+    <!-- Centered Dashboard Main Content -->
+    <main>
+      <h2>👋 Hello, <span id="user-name">User</span></h2>
+      <p>
+        This is your personalized dashboard. Explore your courses, progress, and
+        more.
+      </p>
+      <a href="index.html">← Back to Home</a>
+    </main>
 
     <script>
       const authArea = document.getElementById("auth-area");
@@ -161,7 +222,7 @@
         </div>
       `;
       } else {
-        window.location.href = "login.html"; // Redirect if not logged in
+        window.location.href = "login.html";
       }
 
       function toggleUserMenu() {

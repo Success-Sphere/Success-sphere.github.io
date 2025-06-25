@@ -20,7 +20,7 @@ if (user && user.fullName && user.email) {
   <div id="user-menu" class="user-menu" style="display:none">
     <p><strong>${user.fullName}</strong></p>
     <p>${user.email}</p>
-    <a href="dashboard.html" class="menu-link">My Profile</a>
+    <a href="dashboard.html" class="menu-link">My Profile <img src="account circle.png"/></a>
     <button onclick="logoutUser()">Logout</button>
   </div>
 `;
