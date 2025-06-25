@@ -4,5 +4,22 @@
   "scripts": {
     "start": "php -S localhost:8000 & browser-sync start --proxy localhost:8000 --files '**/*.*'"
   },
-  "dependencies": {}
+  "main": "auth.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Success-Sphere/Success-sphere.github.io.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Success-Sphere/Success-sphere.github.io/issues"
+  },
+  "homepage": "https://github.com/Success-Sphere/Success-sphere.github.io#readme",
+  "description": "",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^5.1.0",
+    "mysql2": "^3.14.1"
+  }
 }
