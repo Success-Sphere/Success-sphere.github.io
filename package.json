@@ -16,10 +16,15 @@
     "url": "https://github.com/Success-Sphere/Success-sphere.github.io/issues"
   },
   "homepage": "https://github.com/Success-Sphere/Success-sphere.github.io#readme",
-  "description": "",
   "dependencies": {
     "cors": "^2.8.5",
     "express": "^5.1.0",
     "mysql2": "^3.14.1"
-  }
+  },
+  "devDependencies": {
+    "clean-css": "^5.3.3",
+    "html-minifier-terser": "^7.2.0",
+    "terser": "^5.43.1"
+  },
+  "description": ""
 }

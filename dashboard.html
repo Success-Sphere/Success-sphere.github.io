@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>Dashboard - Success Sphere</title>
     <link rel="stylesheet" href="style.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -11,10 +11,9 @@
       href="https://fonts.googleapis.com/css2?family=Parisienne&display=swap"
       rel="stylesheet"
     />
-    <script src="script.js" defer></script>
+    <script src="script.js" defer="defer"></script>
     <script src="auth.js" type="module"></script>
-    <script src="get-auth.js" defer></script>
-
+    <script src="get-auth.js" defer="defer"></script>
     <style>
       body {
         font-family: "Segoe UI", sans-serif;
@@ -26,24 +25,22 @@
         min-height: 10vh;
       }
       .topbar {
-        background-color: #003366;
-        color: white;
-        padding: 0.6rem 1.5rem; /* ↓ Reduced height */
+        background-color: #036;
+        color: #fff;
+        padding: 0.6rem 1.5rem;
         display: flex;
         justify-content: space-between;
         align-items: center;
         position: relative;
       }
-
       .topbar h1.logo {
-        font-family: "Parisienne", cursive;
+        font-family: Parisienne, cursive;
         font-size: 1.6rem;
         margin: 0;
         flex-grow: 1;
       }
-
       .dashboard-box {
-        background: white;
+        background: #fff;
         padding: 2rem;
         margin-top: 3rem;
         border-radius: 12px;
@@ -52,20 +49,17 @@
         width: 90%;
         text-align: center;
       }
-
       .dashboard-box h2 {
         font-size: 1.8rem;
-        color: #003366;
+        color: #036;
         margin-bottom: 0.5rem;
       }
-
       .dashboard-box p {
         color: #444;
         font-size: 1rem;
         line-height: 1.6;
         margin-bottom: 1rem;
       }
-
       main {
         display: flex;
         justify-content: center;
@@ -77,47 +71,41 @@
         margin-left: auto;
         position: relative;
       }
-
       .logo {
-        font-family: "Parisienne", cursive;
+        font-family: Parisienne, cursive;
         font-size: 2rem;
       }
-
       .menu-icon {
         font-size: 1.8rem;
         cursor: pointer;
       }
-
       main h2 {
         font-size: 2.2rem;
-        color: #003366;
+        color: #036;
         margin-bottom: 1rem;
       }
-
       main p {
         font-size: 1.1rem;
         color: #333;
         max-width: 600px;
         margin-bottom: 1.5rem;
       }
-
       main a {
         text-decoration: none;
         color: #007bff;
-        font-weight: bold;
+        font-weight: 700;
         font-size: 1rem;
       }
-
       .user-circle {
         background: #42443a;
-        color: white;
+        color: #fff;
         border-radius: 50%;
         width: 40px;
         height: 40px;
         text-align: center;
         line-height: 40px;
         cursor: pointer;
-        font-weight: bold;
+        font-weight: 700;
         margin-top: -3vh;
         margin-right: 10px;
       }
@@ -128,7 +116,7 @@
         position: absolute;
         top: 70px;
         right: 1.5rem;
-        background: white;
+        background: #fff;
         border: 1px solid #ccc;
         padding: 1rem;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -136,138 +124,160 @@
         min-width: 220px;
         z-index: 999;
       }
-
       .user-menu-header {
         margin-bottom: 1rem;
       }
-
       .user-initial-circle {
         width: 40px;
         height: 40px;
         background: #007bff;
-        color: white;
+        color: #fff;
         border-radius: 50%;
         text-align: center;
         line-height: 40px;
-        font-weight: bold;
+        font-weight: 700;
         margin-bottom: 0.5rem;
       }
-
       .user-name {
-        font-weight: bold;
+        font-weight: 700;
         margin: 0;
       }
-
       .user-email {
         font-size: 0.9rem;
         color: #666;
         margin: 0;
       }
-
       .user-menu-links {
         display: flex;
         flex-direction: column;
       }
-
-      .menu-link,
-      .logout-btn {
-        background: none;
+      .logout-btn,
+      .menu-link {
+        background: 0 0;
         border: none;
         text-align: left;
         padding: 0.5rem;
         font-size: 1rem;
-        color: #003366;
+        color: #036;
         cursor: pointer;
       }
-
-      .menu-link:hover,
-      .logout-btn:hover {
+      .logout-btn:hover,
+      .menu-link:hover {
         background-color: #f0f0f0;
+      }
+      .form-group {
+        margin-bottom: 1rem;
+      }
+      .form-group label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: bold;
+      }
+      .form-group input {
+        width: 100%;
+        padding: 0.5rem;
+        border: 1px solid #ccc;
+        border-radius: 4px;
       }
     </style>
   </head>
   <body>
-    <!-- Sidebar -->
     <div id="mobileSidebar" class="sidebar">
       <a class="closebtn" onclick="untoggleSidebar()">&times;</a>
-      <a href="index.html">Home</a>
-      <a href="about.html">About</a>
-      <a href="courses.html">Courses</a>
-      <!-- <a href="blog.html">Blog</a>
-      <a href="contact.html">Contact</a> -->
-      <a href="login.html">Login</a>
+      <a href="index.html">Home</a> <a href="about.html">About</a>
+      <a href="courses.html">Courses</a><a href="login.html">Login</a>
       <a href="register.html">Register</a>
     </div>
-
-    <!-- Topbar -->
     <div class="topbar">
       <span class="menu-icon" onclick="toggleSidebar()">&#9776;</span>
       <h1 class="logo">Success Sphere</h1>
       <div id="auth-area" class="auth-right"></div>
     </div>
-
-    <!-- Centered Dashboard Main Content -->
     <main>
       <h2>👋 Hello, <span id="user-name">User</span></h2>
       <p>
-        This is your personalized dashboard. Explore your courses, progress, and
-        more.
+        Welcome to your dashboard! Here you can manage your profile, view
+        courses, and track your progress. If you have any questions or need
+        assistance, feel free to reach out to our support team.
       </p>
+      <div>
+        <div class="dashboard-box">
+          <h2>Dashboard Overview</h2>
+          <p>
+            This is your personal dashboard where you can access all your
+            courses, track your progress, and manage your account settings.
+          </p>
+          <p>
+            Explore the available courses, check your learning path, and stay
+            updated with the latest content.
+          </p>
+        </div>
+        <div class="dashboard-box">
+          <h2>Your Courses</h2>
+          <p>
+            Here you can find all the courses you are enrolled in. Click on a
+            course to view more details and continue learning.
+          </p>
+        </div>
+        <div class="dashboard-box">
+          <h2>Account Settings</h2>
+          <p>
+            Manage your account settings, update your profile information, and
+            change your password. Ensure your details are up-to-date for a
+            better learning experience.
+          </p>
+          <div class="form-group">
+            <label for="email">Email:</label>
+            <input type="email" id="email" value="${userData.email}" />
+          </div>
+          <div class="form-group">
+            <label for="password">Password:</label>
+            <input type="password" id="password" placeholder="New password" />
+          </div>
+          <button onclick="updateProfile()" class="btn">Update Profile</button>
+          <script>
+            function updateProfile() {
+              const email = document.getElementById("email").value.trim();
+              const password = document.getElementById("password").value.trim();
+              if (email && password) {
+                const user = JSON.parse(localStorage.getItem("ssphere_user"));
+                user.email = email;
+                user.password = password;
+                localStorage.setItem("ssphere_user", JSON.stringify(user));
+                alert("Profile updated successfully!");
+              } else {
+                alert("Please fill in all fields.");
+              }
+            }
+          </script>
+        </div>
+      </div>
       <a href="index.html">← Back to Home</a>
     </main>
-
     <script>
-      const authArea = document.getElementById("auth-area");
-      const userData = JSON.parse(localStorage.getItem("ssphere_user") || "{}");
-
+      const authArea = document.getElementById("auth-area"),
+        userData = JSON.parse(localStorage.getItem("ssphere_user") || "{}");
       if (userData && userData.fullName) {
-        const initials = userData.fullName
+        const e = userData.fullName
           .split(" ")
-          .map((n) => n[0].toUpperCase())
+          .map((e) => e[0].toUpperCase())
           .join("")
           .slice(0, 2);
-        document.getElementById("user-name").innerText = userData.fullName;
-
-        authArea.innerHTML = `
-        <div class="user-circle" onclick="toggleUserMenu()">${initials}</div>
-        <div id="user-menu" class="user-menu">
-          <div class="user-menu-header">
-            <div class="user-initial-circle">${initials}</div>
-            <div class="user-info-text">
-              <p class="user-name">${userData.fullName}</p>
-              <p class="user-email">${userData.email}</p>
-            </div>
-          </div>
-          <hr />
-          <div class="user-menu-links">
-            <a href="dashboard.html" class="menu-link">My Profile</a>
-            <button onclick="logoutUser()" class="logout-btn">Logout</button>
-          </div>
-        </div>
-      `;
-      } else {
-        window.location.href = "login.html";
-      }
-
+        (document.getElementById("user-name").innerText = userData.fullName),
+          (authArea.innerHTML = `\n        <div class="user-circle" onclick="toggleUserMenu()">${e}</div>\n        <div id="user-menu" class="user-menu">\n          <div class="user-menu-header">\n            <div class="user-initial-circle">${e}</div>\n            <div class="user-info-text">\n              <p class="user-name">${userData.fullName}</p>\n              <p class="user-email">${userData.email}</p>\n            </div>\n          </div>\n          <hr />\n          <div class="user-menu-links">\n            <a href="dashboard.html" class="menu-link">My Profile</a>\n            <button onclick="logoutUser()" class="logout-btn">Logout</button>\n          </div>\n        </div>\n      `);
+      } else window.location.href = "login.html";
       function toggleUserMenu() {
-        const menu = document.getElementById("user-menu");
-        if (menu) {
-          menu.style.display =
-            menu.style.display === "block" ? "none" : "block";
-        }
+        const e = document.getElementById("user-menu");
+        e && (e.style.display = "block" === e.style.display ? "none" : "block");
       }
-
       function logoutUser() {
-        localStorage.removeItem("ssphere_user");
-        window.location.href = "index.html";
+        localStorage.removeItem("ssphere_user"),
+          (window.location.href = "index.html");
       }
-
       window.addEventListener("click", function (e) {
-        const menu = document.getElementById("user-menu");
-        const auth = document.getElementById("auth-area");
-        if (menu && !auth.contains(e.target)) {
-          menu.style.display = "none";
-        }
+        const n = document.getElementById("user-menu"),
+          s = document.getElementById("auth-area");
+        n && !s.contains(e.target) && (n.style.display = "none");
       });
     </script>
   </body>
