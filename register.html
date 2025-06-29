@@ -2,12 +2,9 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Register - Success Sphere</title>
     <link rel="stylesheet" href="style.css" />
-    <script src="script.js" defer="defer"></script>
-    <script src="auth.js" type="module"></script>
-    <script src="get-auth.js" defer="defer"></script>
   </head>
   <body>
     <div id="mobileSidebar" class="sidebar">
@@ -23,13 +20,36 @@
     <section class="auth-section">
       <div class="auth-container">
         <h2>Create Your Account</h2>
-        <form class="auth-form" onsubmit="handleRegister(event)">
-          <input id="fullname" placeholder="Full Name" required />
-          <input type="email" id="email" placeholder="Email" required />
-          <input type="tel" id="phone" placeholder="Phone Number" required />
+        <form
+          action="/register"
+          method="POST"
+          class="auth-form"
+          onsubmit="handleRegister(event)"
+        >
+          <input
+            id="fullname"
+            name="fullName"
+            placeholder="Full Name"
+            required
+          />
+          <input
+            type="email"
+            id="email"
+            name="email"
+            placeholder="Email"
+            required
+          />
+          <input
+            type="tel"
+            id="phone"
+            name="phone"
+            placeholder="Phone Number"
+            required
+          />
           <input
             type="password"
             id="password"
+            name="password"
             placeholder="Create Password"
             required
           />
@@ -49,16 +69,29 @@
     <script>
       function handleRegister(e) {
         e.preventDefault();
-        const t = document.getElementById("fullname").value.trim(),
-          n = document.getElementById("email").value.trim(),
-          o = document.getElementById("phone").value.trim(),
-          l = document.getElementById("password").value;
-        if (l !== document.getElementById("confirm_password").value)
-          return void alert("Passwords do not match.");
-        const a = { fullName: t, email: n, phone: o, password: l };
-        localStorage.setItem("ssphere_user", JSON.stringify(a)),
-          alert("✅ Registration successfully done! You are now registered."),
-          (window.location.href = "index.html");
+
+        const fullName = document.getElementById("fullname").value.trim();
+        const email = document.getElementById("email").value.trim();
+        const phone = document.getElementById("phone").value.trim();
+        const password = document.getElementById("password").value;
+        const confirm = document.getElementById("confirm_password").value;
+
+        if (password !== confirm) {
+          alert("❌ Passwords do not match.");
+          return;
+        }
+
+        fetch("/register", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ fullName, email, phone, password }),
+        })
+          .then((res) => res.text())
+          .then((msg) => {
+            alert(msg);
+            window.location.href = "login.html";
+          })
+          .catch(() => alert("❌ Registration failed."));
       }
     </script>
   </body>

@@ -47,6 +47,9 @@
         box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
         max-width: 600px;
         width: 90%;
+        flex: 1;
+        max-width: 350px;
+        min-width: 280px;
         text-align: center;
       }
       .dashboard-box h2 {
@@ -179,6 +182,13 @@
         border: 1px solid #ccc;
         border-radius: 4px;
       }
+      .dashboard-box-wrapper {
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+        flex-wrap: wrap; /* make it responsive */
+        margin-top: 2rem;
+      }
     </style>
   </head>
   <body>
@@ -201,55 +211,61 @@
         assistance, feel free to reach out to our support team.
       </p>
       <div>
-        <div class="dashboard-box">
-          <h2>Dashboard Overview</h2>
-          <p>
-            This is your personal dashboard where you can access all your
-            courses, track your progress, and manage your account settings.
-          </p>
-          <p>
-            Explore the available courses, check your learning path, and stay
-            updated with the latest content.
-          </p>
-        </div>
-        <div class="dashboard-box">
-          <h2>Your Courses</h2>
-          <p>
-            Here you can find all the courses you are enrolled in. Click on a
-            course to view more details and continue learning.
-          </p>
-        </div>
-        <div class="dashboard-box">
-          <h2>Account Settings</h2>
-          <p>
-            Manage your account settings, update your profile information, and
-            change your password. Ensure your details are up-to-date for a
-            better learning experience.
-          </p>
-          <div class="form-group">
-            <label for="email">Email:</label>
-            <input type="email" id="email" value="${userData.email}" />
+        <div class="dashboard-box-wrapper">
+          <div class="dashboard-box">
+            <h2>Dashboard Overview</h2>
+            <p>
+              This is your personal dashboard where you can access all your
+              courses, track your progress, and manage your account settings.
+            </p>
+            <p>
+              Explore the available courses, check your learning path, and stay
+              updated with the latest content.
+            </p>
           </div>
-          <div class="form-group">
-            <label for="password">Password:</label>
-            <input type="password" id="password" placeholder="New password" />
+          <div class="dashboard-box">
+            <h2>Your Courses</h2>
+            <p>
+              Here you can find all the courses you are enrolled in. Click on a
+              course to view more details and continue learning.
+            </p>
           </div>
-          <button onclick="updateProfile()" class="btn">Update Profile</button>
-          <script>
-            function updateProfile() {
-              const email = document.getElementById("email").value.trim();
-              const password = document.getElementById("password").value.trim();
-              if (email && password) {
-                const user = JSON.parse(localStorage.getItem("ssphere_user"));
-                user.email = email;
-                user.password = password;
-                localStorage.setItem("ssphere_user", JSON.stringify(user));
-                alert("Profile updated successfully!");
-              } else {
-                alert("Please fill in all fields.");
+          <div class="dashboard-box">
+            <h2>Account Settings</h2>
+            <p>
+              Manage your account settings, update your profile information, and
+              change your password. Ensure your details are up-to-date for a
+              better learning experience.
+            </p>
+            <div class="form-group">
+              <label for="email">Email:</label>
+              <input type="email" id="email" value="email@example.com" />
+            </div>
+            <div class="form-group">
+              <label for="password">Password:</label>
+              <input type="password" id="password" placeholder="New password" />
+            </div>
+            <button onclick="updateProfile()" class="btn">
+              Update Profile
+            </button>
+            <script>
+              function updateProfile() {
+                const email = document.getElementById("email").value.trim();
+                const password = document
+                  .getElementById("password")
+                  .value.trim();
+                if (email && password) {
+                  const user = JSON.parse(localStorage.getItem("ssphere_user"));
+                  user.email = email;
+                  user.password = password;
+                  localStorage.setItem("ssphere_user", JSON.stringify(user));
+                  alert("Profile updated successfully!");
+                } else {
+                  alert("Please fill in all fields.");
+                }
               }
-            }
-          </script>
+            </script>
+          </div>
         </div>
       </div>
       <a href="index.html">← Back to Home</a>
@@ -279,6 +295,18 @@
           s = document.getElementById("auth-area");
         n && !s.contains(e.target) && (n.style.display = "none");
       });
+      then((msg) => {
+        alert(msg);
+        // Save basic info for dashboard
+        const user = { fullName, email, phone };
+        localStorage.setItem("ssphere_name", JSON.stringify(user));
+        window.location.href = "dashboard.html";
+      });
+
+      const userData1 = JSON.parse(
+        localStorage.getItem("ssphere_name") || "{}"
+      );
+      document.getElementById("user-name").innerText = userData1.fullName;
     </script>
   </body>
 </html>
