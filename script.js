@@ -1,1 +1,286 @@
-function toggleSidebar(){document.getElementById("mobileSidebar").classList.toggle("open")}function untoggleSidebar(){document.getElementById("mobileSidebar").classList.remove("open")}function toggleUserMenu(){const e=document.getElementById("user-menu");e&&(e.style.display="block"===e.style.display?"none":"block")}function logoutUser(){localStorage.removeItem("ssphere_name"),localStorage.removeItem("ssphere_email"),location.reload()}function handleCredentialResponse(e){const t=jwt_decode(e.credential);localStorage.setItem("user",JSON.stringify(t)),showUserProfile(),window.location.href="index.html"}function showUserProfile(){const e=JSON.parse(localStorage.getItem("user"));e&&(document.getElementById("auth-area").innerHTML=`\n      <div class="user-profile" onclick="toggleUserMenu()">\n        <img src="${e.picture}" alt="User" class="user-avatar">\n      </div>\n      <div id="user-menu" class="user-menu" style="display: none;">\n        <p>${e.name}</p>\n        <button onclick="signOut()">Sign Out</button>\n      </div>\n    `)}function toggleUserMenu(){const e=document.getElementById("user-menu");e.style.display="block"===e.style.display?"none":"block"}function signOut(){localStorage.removeItem("user"),location.reload()}document.querySelectorAll(".sidebar a").forEach(e=>{e.addEventListener("click",()=>{toggleSidebar()})}),document.addEventListener("click",e=>{const t=document.getElementById("mobileSidebar"),n=document.querySelector(".topbar");t&&!t.contains(e.target)&&!n.contains(e.target)&&t.classList.contains("open")&&t.classList.remove("open")}),window.addEventListener("DOMContentLoaded",()=>{const e=document.getElementById("auth-area");if(!e)return;const t=localStorage.getItem("ssphere_name")||"User",n=localStorage.getItem("ssphere_email")||"user@example.com";e.innerHTML=`\n    <div class="user-circle" onclick="toggleUserMenu()">\n      ${t.charAt(0).toUpperCase()}\n    </div>\n    <div id="user-menu" class="user-menu" style="display: none;">\n      <div class="user-menu-header">\n        <div class="user-initial-circle">${t.charAt(0).toUpperCase()}</div>\n        <div class="user-info-text">\n          <p class="user-name">${t}</p>\n          <p class="user-email">${n}</p>\n        </div>\n      </div>\n      <hr />\n      <div class="user-menu-links">\n        <a href="dashboard.html" class="menu-link">My Profile</a>\n        <button onclick="logoutUser()" class="menu-link logout-btn">Logout</button>\n      </div>\n    </div>\n  `}),window.onload=showUserProfile,document.addEventListener("keydown",e=>{"Escape"===e.key&&document.getElementById("mobileSidebar").classList.remove("open")}),document.querySelectorAll("a[href^='#']").forEach(e=>{e.addEventListener("click",function(e){e.preventDefault();const t=document.querySelector(this.getAttribute("href"));t&&t.scrollIntoView({behavior:"smooth",block:"start"})})}),document.querySelectorAll(".btn").forEach(e=>{e.addEventListener("mouseover",()=>{e.style.transform="scale(1.05)"}),e.addEventListener("mouseout",()=>{e.style.transform="scale(1)"})});const heroButton=document.querySelector(".hero .btn");heroButton&&(heroButton.addEventListener("mouseover",()=>{heroButton.style.boxShadow="0px 10px 20px rgba(0, 0, 0, 0.2)"}),heroButton.addEventListener("mouseout",()=>{heroButton.style.boxShadow="none"})),document.querySelectorAll("form").forEach(e=>{e.addEventListener("submit",t=>{const n=e.querySelectorAll("input[required]");for(let e of n)if(!e.value.trim())return t.preventDefault(),alert("Please fill in all required fields."),void e.focus()})});const loginForm=document.querySelector("#login-form");loginForm&&loginForm.addEventListener("submit",function(e){e.preventDefault(),validateForm(loginForm)&&alert("Login Successful!")});const registerForm=document.querySelector("#register-form");registerForm&&registerForm.addEventListener("submit",function(e){e.preventDefault(),validateForm(registerForm)&&alert("Registration Successful!")});const contactForm=document.querySelector("#contact-form");function toggleSidebar(){const e=document.getElementById("mobileSidebar");e.style.width="250px"===e.style.width?"0":"250px"}contactForm&&contactForm.addEventListener("submit",function(e){e.preventDefault();const t=contactForm.querySelector('[name="name"]'),n=contactForm.querySelector('[name="email"]'),o=contactForm.querySelector('[name="message"]');""===t.value.trim()||""===n.value.trim()||""===o.value.trim()?alert("Please fill in all fields"):(alert("Message sent successfully! We will get back to you soon."),contactForm.reset())});const courseCards=document.querySelectorAll(".course-card");courseCards&&courseCards.forEach(e=>{e.addEventListener("click",function(){const e=this.querySelector("h3").innerText;alert(`You clicked on the course: ${e}`)})});const settingsButton=document.querySelector("#settings-btn"),settingsPanel=document.querySelector("#settings-panel");settingsButton&&settingsPanel&&settingsButton.addEventListener("click",function(){settingsPanel.classList.toggle("active")});const courseModal=document.querySelector("#course-modal"),courseDetailsBtns=document.querySelectorAll(".course-details-btn"),closeModalBtn=document.querySelector("#close-modal-btn");courseDetailsBtns&&courseModal&&closeModalBtn&&(courseDetailsBtns.forEach(e=>{e.addEventListener("click",function(){const e=this.getAttribute("data-title"),t=this.getAttribute("data-description");courseModal.querySelector(".modal-title").innerText=e,courseModal.querySelector(".modal-description").innerText=t,courseModal.classList.add("active")})}),closeModalBtn.addEventListener("click",function(){courseModal.classList.remove("active")}));const express=require("express"),path=require("path"),app=express(),PORT=3e3;function validateForm(e){const t=e.querySelectorAll("input[required]");let n=!0;if(t.forEach(e=>{e.value.trim()?(e.classList.remove("error"),e.nextElementSibling.textContent=""):(n=!1,e.classList.add("error"),e.nextElementSibling.textContent="This field is required.")}),fetch("register-alt.php",{method:"POST",headers:{"Content-Type":"application/x-www-form-urlencoded"},body:new URLSearchParams({email:document.querySelector("#email").value,username:document.querySelector("#username").value,password:document.querySelector("#password").value})}),n){const t=e.querySelector('input[name="email"]'),o=e.querySelector('input[name="password"]');t&&!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(t.value)&&(n=!1,t.classList.add("error"),t.nextElementSibling.textContent="Please enter a valid email."),o&&o.value.length<6&&(n=!1,o.classList.add("error"),o.nextElementSibling.textContent="Password must be at least 6 characters long.")}return n}function toggleSidebar(){document.getElementById("mobileSidebar").classList.toggle("open")}function untoggleSidebar(){document.getElementById("mobileSidebar").classList.remove("open")}function toggleUserMenu(){const e=document.getElementById("user-menu");e&&(e.style.display="block"===e.style.display?"none":"block")}function logoutUser(){localStorage.removeItem("ssphere_user"),location.reload()}function showUserProfile(){const e=JSON.parse(localStorage.getItem("ssphere_user")),t=document.getElementById("auth-area");if(t&&e&&e.fullName){const n=e.fullName.split(" ").map(e=>e[0].toUpperCase()).join("").slice(0,2);t.innerHTML=`\n      <div class="user-circle" onclick="toggleUserMenu()">${n}</div>\n      <div id="user-menu" class="user-menu" style="display:none">\n        <p><strong>${e.fullName}</strong></p>\n        <p>${e.email}</p>\n        <a href="dashboard.html" class="menu-link">My Profile</a>\n        <button onclick="logoutUser()" class="logout-btn">Logout</button>\n      </div>`}}window.addEventListener("DOMContentLoaded",()=>{showUserProfile()}),document.addEventListener("DOMContentLoaded",()=>{const e=document.getElementById("registerForm"),t=document.getElementById("loginForm");e&&e.addEventListener("submit",async e=>{e.preventDefault();const t=document.getElementById("fullname").value.trim(),n=document.getElementById("email").value.trim(),o=document.getElementById("phone").value.trim(),r=document.getElementById("password").value.trim(),s=document.getElementById("confirm_password").value.trim();if(r===s)try{const e=await fetch("/register",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({fullName:t,email:n,phone:o,password:r,confirm_password:s})}),l=await e.text();if(!e.ok)return alert(l);localStorage.setItem("ssphere_user",JSON.stringify({fullName:t,email:n,phone:o})),alert("✅ Registration successful!"),location.href="dashboard.html"}catch(e){alert("Registration error: "+e.message)}else alert("❌ Passwords do not match.")}),t&&t.addEventListener("submit",async e=>{e.preventDefault();const t=document.getElementById("email").value.trim(),n=document.getElementById("password").value.trim();try{const e=await fetch("/login",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({email:t,password:n})}),o=await e.text();if(!e.ok)return alert(o);alert("✅ Login successful!"),location.href="dashboard.html"}catch(e){alert("Login error: "+e.message)}})});
+function toggleSidebar() {
+  document.getElementById("mobileSidebar").classList.toggle("open");
+}
+function untoggleSidebar() {
+  document.getElementById("mobileSidebar").classList.remove("open");
+}
+function toggleUserMenu() {
+  const e = document.getElementById("user-menu");
+  e && (e.style.display = "block" === e.style.display ? "none" : "block");
+}
+function logoutUser() {
+  localStorage.removeItem("ssphere_name"),
+    localStorage.removeItem("ssphere_email"),
+    location.reload();
+}
+function handleCredentialResponse(e) {
+  const t = jwt_decode(e.credential);
+  localStorage.setItem("user", JSON.stringify(t)),
+    showUserProfile(),
+    (window.location.href = "index.html");
+}
+function showUserProfile() {
+  const e = JSON.parse(localStorage.getItem("user"));
+  e &&
+    (document.getElementById(
+      "auth-area"
+    ).innerHTML = `\n      <div class="user-profile" onclick="toggleUserMenu()">\n        <img src="${e.picture}" alt="User" class="user-avatar">\n      </div>\n      <div id="user-menu" class="user-menu" style="display: none;">\n        <p>${e.name}</p>\n        <button onclick="signOut()">Sign Out</button>\n      </div>\n    `);
+}
+function toggleUserMenu() {
+  const e = document.getElementById("user-menu");
+  e.style.display = "block" === e.style.display ? "none" : "block";
+}
+function signOut() {
+  localStorage.removeItem("user"), location.reload();
+}
+document.querySelectorAll(".sidebar a").forEach((e) => {
+  e.addEventListener("click", () => {
+    toggleSidebar();
+  });
+}),
+  document.addEventListener("click", (e) => {
+    const t = document.getElementById("mobileSidebar"),
+      n = document.querySelector(".topbar");
+    t &&
+      !t.contains(e.target) &&
+      !n.contains(e.target) &&
+      t.classList.contains("open") &&
+      t.classList.remove("open");
+  }),
+  window.addEventListener("DOMContentLoaded", () => {
+    const e = document.getElementById("auth-area");
+    if (!e) return;
+    const t = localStorage.getItem("ssphere_name") || "User",
+      n = localStorage.getItem("ssphere_email") || "user@example.com";
+    e.innerHTML = `\n    <div class="user-circle" onclick="toggleUserMenu()">\n      ${t
+      .charAt(0)
+      .toUpperCase()}\n    </div>\n    <div id="user-menu" class="user-menu" style="display: none;">\n      <div class="user-menu-header">\n        <div class="user-initial-circle">${t
+      .charAt(0)
+      .toUpperCase()}</div>\n        <div class="user-info-text">\n          <p class="user-name">${t}</p>\n          <p class="user-email">${n}</p>\n        </div>\n      </div>\n      <hr />\n      <div class="user-menu-links">\n        <a href="dashboard.html" class="menu-link">My Profile</a>\n        <button onclick="logoutUser()" class="menu-link logout-btn">Logout</button>\n      </div>\n    </div>\n  `;
+  }),
+  (window.onload = showUserProfile),
+  document.addEventListener("keydown", (e) => {
+    "Escape" === e.key &&
+      document.getElementById("mobileSidebar").classList.remove("open");
+  }),
+  document.querySelectorAll("a[href^='#']").forEach((e) => {
+    e.addEventListener("click", function (e) {
+      e.preventDefault();
+      const t = document.querySelector(this.getAttribute("href"));
+      t && t.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+  }),
+  document.querySelectorAll(".btn").forEach((e) => {
+    e.addEventListener("mouseover", () => {
+      e.style.transform = "scale(1.05)";
+    }),
+      e.addEventListener("mouseout", () => {
+        e.style.transform = "scale(1)";
+      });
+  });
+const heroButton = document.querySelector(".hero .btn");
+heroButton &&
+  (heroButton.addEventListener("mouseover", () => {
+    heroButton.style.boxShadow = "0px 10px 20px rgba(0, 0, 0, 0.2)";
+  }),
+  heroButton.addEventListener("mouseout", () => {
+    heroButton.style.boxShadow = "none";
+  })),
+  document.querySelectorAll("form").forEach((e) => {
+    e.addEventListener("submit", (t) => {
+      const n = e.querySelectorAll("input[required]");
+      for (let e of n)
+        if (!e.value.trim())
+          return (
+            t.preventDefault(),
+            alert("Please fill in all required fields."),
+            void e.focus()
+          );
+    });
+  });
+const loginForm = document.querySelector("#login-form");
+loginForm &&
+  loginForm.addEventListener("submit", function (e) {
+    e.preventDefault(), validateForm(loginForm) && alert("Login Successful!");
+  });
+const registerForm = document.querySelector("#register-form");
+registerForm &&
+  registerForm.addEventListener("submit", function (e) {
+    e.preventDefault(),
+      validateForm(registerForm) && alert("Registration Successful!");
+  });
+const contactForm = document.querySelector("#contact-form");
+function toggleSidebar() {
+  const e = document.getElementById("mobileSidebar");
+  e.style.width = "250px" === e.style.width ? "0" : "250px";
+}
+contactForm &&
+  contactForm.addEventListener("submit", function (e) {
+    e.preventDefault();
+    const t = contactForm.querySelector('[name="name"]'),
+      n = contactForm.querySelector('[name="email"]'),
+      o = contactForm.querySelector('[name="message"]');
+    "" === t.value.trim() || "" === n.value.trim() || "" === o.value.trim()
+      ? alert("Please fill in all fields")
+      : (alert("Message sent successfully! We will get back to you soon."),
+        contactForm.reset());
+  });
+const courseCards = document.querySelectorAll(".course-card");
+courseCards &&
+  courseCards.forEach((e) => {
+    e.addEventListener("click", function () {
+      const e = this.querySelector("h3").innerText;
+      alert(`You clicked on the course: ${e}`);
+    });
+  });
+const settingsButton = document.querySelector("#settings-btn"),
+  settingsPanel = document.querySelector("#settings-panel");
+settingsButton &&
+  settingsPanel &&
+  settingsButton.addEventListener("click", function () {
+    settingsPanel.classList.toggle("active");
+  });
+const courseModal = document.querySelector("#course-modal"),
+  courseDetailsBtns = document.querySelectorAll(".course-details-btn"),
+  closeModalBtn = document.querySelector("#close-modal-btn");
+courseDetailsBtns &&
+  courseModal &&
+  closeModalBtn &&
+  (courseDetailsBtns.forEach((e) => {
+    e.addEventListener("click", function () {
+      const e = this.getAttribute("data-title"),
+        t = this.getAttribute("data-description");
+      (courseModal.querySelector(".modal-title").innerText = e),
+        (courseModal.querySelector(".modal-description").innerText = t),
+        courseModal.classList.add("active");
+    });
+  }),
+  closeModalBtn.addEventListener("click", function () {
+    courseModal.classList.remove("active");
+  }));
+const express = require("express"),
+  path = require("path"),
+  app = express(),
+  PORT = 3e3;
+function validateForm(e) {
+  const t = e.querySelectorAll("input[required]");
+  let n = !0;
+  if (
+    (t.forEach((e) => {
+      e.value.trim()
+        ? (e.classList.remove("error"), (e.nextElementSibling.textContent = ""))
+        : ((n = !1),
+          e.classList.add("error"),
+          (e.nextElementSibling.textContent = "This field is required."));
+    }),
+    fetch("register-alt.php", {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: new URLSearchParams({
+        email: document.querySelector("#email").value,
+        username: document.querySelector("#username").value,
+        password: document.querySelector("#password").value,
+      }),
+    }),
+    n)
+  ) {
+    const t = e.querySelector('input[name="email"]'),
+      o = e.querySelector('input[name="password"]');
+    t &&
+      !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(t.value) &&
+      ((n = !1),
+      t.classList.add("error"),
+      (t.nextElementSibling.textContent = "Please enter a valid email.")),
+      o &&
+        o.value.length < 6 &&
+        ((n = !1),
+        o.classList.add("error"),
+        (o.nextElementSibling.textContent =
+          "Password must be at least 6 characters long."));
+  }
+  return n;
+}
+function toggleSidebar() {
+  document.getElementById("mobileSidebar").classList.toggle("open");
+}
+function untoggleSidebar() {
+  document.getElementById("mobileSidebar").classList.remove("open");
+}
+function toggleUserMenu() {
+  const e = document.getElementById("user-menu");
+  e && (e.style.display = "block" === e.style.display ? "none" : "block");
+}
+function logoutUser() {
+  localStorage.removeItem("ssphere_user"), location.reload();
+}
+function showUserProfile() {
+  const e = JSON.parse(localStorage.getItem("ssphere_user")),
+    t = document.getElementById("auth-area");
+  if (t && e && e.fullName) {
+    const n = e.fullName
+      .split(" ")
+      .map((e) => e[0].toUpperCase())
+      .join("")
+      .slice(0, 2);
+    t.innerHTML = `\n      <div class="user-circle" onclick="toggleUserMenu()">${n}</div>\n      <div id="user-menu" class="user-menu" style="display:none">\n        <p><strong>${e.fullName}</strong></p>\n        <p>${e.email}</p>\n        <a href="dashboard.html" class="menu-link">My Profile</a>\n        <button onclick="logoutUser()" class="logout-btn">Logout</button>\n      </div>`;
+  }
+}
+window.addEventListener("DOMContentLoaded", () => {
+  showUserProfile();
+}),
+  document.addEventListener("DOMContentLoaded", () => {
+    const e = document.getElementById("registerForm"),
+      t = document.getElementById("loginForm");
+    e &&
+      e.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const t = document.getElementById("fullname").value.trim(),
+          n = document.getElementById("email").value.trim(),
+          o = document.getElementById("phone").value.trim(),
+          r = document.getElementById("password").value.trim(),
+          s = document.getElementById("confirm_password").value.trim();
+        if (r === s)
+          try {
+            const e = await fetch("/register", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                  fullName: t,
+                  email: n,
+                  phone: o,
+                  password: r,
+                  confirm_password: s,
+                }),
+              }),
+              l = await e.text();
+            if (!e.ok) return alert(l);
+            localStorage.setItem(
+              "ssphere_user",
+              JSON.stringify({ fullName: t, email: n, phone: o })
+            ),
+              alert("✅ Registration successful!"),
+              (location.href = "dashboard.html");
+          } catch (e) {
+            alert("Registration error: " + e.message);
+          }
+        else alert("❌ Passwords do not match.");
+      }),
+      t &&
+        t.addEventListener("submit", async (e) => {
+          e.preventDefault();
+          const t = document.getElementById("email").value.trim(),
+            n = document.getElementById("password").value.trim();
+          try {
+            const e = await fetch("/login", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ email: t, password: n }),
+              }),
+              o = await e.text();
+            if (!e.ok) return alert(o);
+            alert("✅ Login successful!"), (location.href = "dashboard.html");
+          } catch (e) {
+            alert("Login error: " + e.message);
+          }
+        });
+  });
