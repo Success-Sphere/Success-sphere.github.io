@@ -1,1 +1,68 @@
-const express=require("express"),mysql=require("mysql2"),path=require("path"),bodyParser=require("body-parser"),bcrypt=require("bcrypt"),app=express(),PORT=3e3,db=mysql.createConnection({host:"localhost",user:"root",password:"GHHJghjgYT&T&*h%^*%^6oVHGT&D%$etybHUTUGHIT*jNKHGT&RR^EYyigURUYUhuiyWREGRNCDWRES@RDFYT%D$ERDFHGUG&^FYERDFGHJKLIHUYTHJOLI):P(",database:"success_sphere"});app.post("/api/logout",(e,s)=>{s.status(200).send("Logged out")}),db.connect(e=>{e&&(console.error("MySQL connection failed:",e),process.exit(1)),console.log("✅ Connected to MySQL")}),app.use(express.static(__dirname)),app.use(bodyParser.urlencoded({extended:!0})),app.use(express.json()),app.get("/",(e,s)=>s.sendFile(path.join(__dirname,"index.html"))),app.get("/register",(e,s)=>s.sendFile(path.join(__dirname,"register.html"))),app.get("/login",(e,s)=>s.sendFile(path.join(__dirname,"login.html"))),app.get("/dashboard",(e,s)=>s.sendFile(path.join(__dirname,"dashboard.html"))),app.get("/about",(e,s)=>s.sendFile(path.join(__dirname,"about.html"))),app.post("/register",(e,s)=>{const{fullName:r,email:a,phone:t,password:o,confirm_password:n}=e.body;if(o!==n)return s.status(400).send("❌ Passwords do not match.");db.query("INSERT INTO users (fullName, email, phone, password) VALUES (?, ?, ?, ?)",[r,a,t,o],e=>{if(e)return s.status(500).send("❌ Registration failed: "+e.message);s.send("✅ Registration successful. Redirecting to Dashboard...")})}),app.post("/login",(e,s)=>{const{email:r,password:a}=e.body;db.query("SELECT * FROM users WHERE email = ?",[r],async(e,r)=>{if(e)return s.status(500).send("❌ Login error: "+e.message);if(0===r.length)return s.status(401).send("❌ Invalid email or password.");if(!await bcrypt.compare(a,r[0].password))return s.status(401).send("❌ Invalid email or password.");s.send('\n        <p>✅ Login successful. Redirecting…</p>\n        <script>\n          window.location.href = "/dashboard?login=success";\n        <\/script>\n      ')})}),app.listen(3e3,()=>{console.log("🌐 Server running at http://localhost:3000")});
+const express = require("express"),
+  mysql = require("mysql2"),
+  path = require("path"),
+  bodyParser = require("body-parser"),
+  bcrypt = require("bcrypt"),
+  app = express(),
+  PORT = 3e3,
+  db = mysql.createConnection({
+    host: "localhost",
+    user: "root",
+    password:
+      "GHHJghjgYT&T&*h%^*%^6oVHGT&D%$etybHUTUGHIT*jNKHGT&RR^EYyigURUYUhuiyWREGRNCDWRES@RDFYT%D$ERDFHGUG&^FYERDFGHJKLIHUYTHJOLI):P(",
+    database: "success_sphere",
+  });
+(app.post("/api/logout", (e, s) => {
+  s.status(200).send("Logged out");
+}),
+  db.connect((e) => {
+    (e && (console.error("MySQL connection failed:", e), process.exit(1)),
+      console.log("✅ Connected to MySQL"));
+  }),
+  app.use(express.static(__dirname)),
+  app.use(bodyParser.urlencoded({ extended: !0 })),
+  app.use(express.json()),
+  app.get("/", (e, s) => s.sendFile(path.join(__dirname, "index.html"))),
+  app.get("/register", (e, s) =>
+    s.sendFile(path.join(__dirname, "register.html")),
+  ),
+  app.get("/login", (e, s) => s.sendFile(path.join(__dirname, "login.html"))),
+  app.get("/dashboard", (e, s) =>
+    s.sendFile(path.join(__dirname, "dashboard.html")),
+  ),
+  app.get("/about", (e, s) => s.sendFile(path.join(__dirname, "about.html"))),
+  app.post("/register", (e, s) => {
+    const {
+      fullName: r,
+      email: a,
+      phone: t,
+      password: o,
+      confirm_password: n,
+    } = e.body;
+    if (o !== n) return s.status(400).send("❌ Passwords do not match.");
+    db.query(
+      "INSERT INTO users (fullName, email, phone, password) VALUES (?, ?, ?, ?)",
+      [r, a, t, o],
+      (e) => {
+        if (e)
+          return s.status(500).send("❌ Registration failed: " + e.message);
+        s.send("✅ Registration successful. Redirecting to Dashboard...");
+      },
+    );
+  }),
+  app.post("/login", (e, s) => {
+    const { email: r, password: a } = e.body;
+    db.query("SELECT * FROM users WHERE email = ?", [r], async (e, r) => {
+      if (e) return s.status(500).send("❌ Login error: " + e.message);
+      if (0 === r.length)
+        return s.status(401).send("❌ Invalid email or password.");
+      if (!(await bcrypt.compare(a, r[0].password)))
+        return s.status(401).send("❌ Invalid email or password.");
+      s.send(
+        '\n        <p>✅ Login successful. Redirecting…</p>\n        <script>\n          window.location.href = "/dashboard?login=success";\n        <\/script>\n      ',
+      );
+    });
+  }),
+  app.listen(3e3, () => {
+    console.log("🌐 Server running at http://localhost:3000");
+  }));

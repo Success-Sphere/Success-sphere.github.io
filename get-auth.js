@@ -1,1 +1,22 @@
-function logoutUser(){fetch("/api/logout",{method:"POST"}).then(()=>{window.location.href="index.html"})}fetch("/api/session").then(n=>n.json()).then(n=>{if(n&&n.fullName){const e=n.fullName.split(" ").map(n=>n[0]).join("").toUpperCase().slice(0,2);document.getElementById("auth-area").innerHTML=`\n        <div class="user-circle" onclick="toggleMenu()">${e}</div>\n        <div id="user-menu" class="user-menu" style="display:none">\n          <p><strong>${n.fullName}</strong></p>\n          <p>${n.email}</p>\n          <a href="dashboard.html" class="menu-link">My Profile</a>\n          <button onclick="logoutUser()">Logout</button>\n        </div>\n      `}}).catch(()=>{console.warn("Not logged in.")});
+function logoutUser() {
+  fetch("/api/logout", { method: "POST" }).then(() => {
+    window.location.href = "index.html";
+  });
+}
+fetch("/api/session")
+  .then((n) => n.json())
+  .then((n) => {
+    if (n && n.fullName) {
+      const e = n.fullName
+        .split(" ")
+        .map((n) => n[0])
+        .join("")
+        .toUpperCase()
+        .slice(0, 2);
+      document.getElementById("auth-area").innerHTML =
+        `\n        <div class="user-circle" onclick="toggleMenu()">${e}</div>\n        <div id="user-menu" class="user-menu" style="display:none">\n          <p><strong>${n.fullName}</strong></p>\n          <p>${n.email}</p>\n          <a href="dashboard.html" class="menu-link">My Profile</a>\n          <button onclick="logoutUser()">Logout</button>\n        </div>\n      `;
+    }
+  })
+  .catch(() => {
+    console.warn("Not logged in.");
+  });
