@@ -33,16 +33,16 @@ const express = require("express"),
   app.get("/about", (e, s) => s.sendFile(path.join(__dirname, "about.html"))),
   app.post("/register", (e, s) => {
     const {
-      fullName: r,
-      email: a,
-      phone: t,
-      password: o,
+      fullName: a,
+      email: o,
+      phone: r,
+      password: t,
       confirm_password: n,
     } = e.body;
-    if (o !== n) return s.status(400).send("❌ Passwords do not match.");
+    if (t !== n) return s.status(400).send("❌ Passwords do not match.");
     db.query(
       "INSERT INTO users (fullName, email, phone, password) VALUES (?, ?, ?, ?)",
-      [r, a, t, o],
+      [a, o, r, t],
       (e) => {
         if (e)
           return s.status(500).send("❌ Registration failed: " + e.message);
@@ -51,17 +51,18 @@ const express = require("express"),
     );
   }),
   app.post("/login", (e, s) => {
-    const { email: r, password: a } = e.body;
-    db.query("SELECT * FROM users WHERE email = ?", [r], async (e, r) => {
-      if (e) return s.status(500).send("❌ Login error: " + e.message);
-      if (0 === r.length)
-        return s.status(401).send("❌ Invalid email or password.");
-      if (!(await bcrypt.compare(a, r[0].password)))
-        return s.status(401).send("❌ Invalid email or password.");
-      s.send(
-        '\n        <p>✅ Login successful. Redirecting…</p>\n        <script>\n          window.location.href = "/dashboard?login=success";\n        <\/script>\n      ',
-      );
-    });
+    const { email: a, password: o } = e.body;
+    db.query("SELECT * FROM users WHERE email = ?", [a], async (e, a) =>
+      e
+        ? s.status(500).send("❌ Login error: " + e.message)
+        : 0 === a.length
+          ? s.status(401).send("❌ Invalid email or password.")
+          : (await bcrypt.compare(o, a[0].password))
+            ? void s.send(
+                '\n        <p>✅ Login successful. Redirecting…</p>\n        <script>\n          window.location.href = "/dashboard?login=success";\n        <\/script>\n      ',
+              )
+            : s.status(401).send("❌ Invalid email or password."),
+    );
   }),
   app.listen(3e3, () => {
     console.log("🌐 Server running at http://localhost:3000");

@@ -6,21 +6,21 @@ function untoggleSidebar() {
 }
 function handleCredentialResponse(e) {
   const t = jwt_decode(e.credential);
-  localStorage.setItem("user", JSON.stringify(t)),
+  (localStorage.setItem("user", JSON.stringify(t)),
     showUserProfile(),
-    (window.location.href = "index.html");
+    (window.location.href = "index.html"));
 }
-document.querySelectorAll(".sidebar a").forEach((e) => {
+(document.querySelectorAll(".sidebar a").forEach((e) => {
   e.addEventListener("click", () => {
     toggleSidebar();
   });
 }),
   document.addEventListener("click", (e) => {
     const t = document.getElementById("mobileSidebar"),
-      n = document.querySelector(".topbar");
+      o = document.querySelector(".topbar");
     t &&
       !t.contains(e.target) &&
-      !n.contains(e.target) &&
+      !o.contains(e.target) &&
       t.classList.contains("open") &&
       t.classList.remove("open");
   }),
@@ -37,15 +37,15 @@ document.querySelectorAll(".sidebar a").forEach((e) => {
     });
   }),
   document.querySelectorAll(".btn").forEach((e) => {
-    e.addEventListener("mouseover", () => {
+    (e.addEventListener("mouseover", () => {
       e.style.transform = "scale(1.05)";
     }),
       e.addEventListener("mouseout", () => {
         e.style.transform = "scale(1)";
-      });
-  });
+      }));
+  }));
 const heroButton = document.querySelector(".hero .btn");
-heroButton &&
+(heroButton &&
   (heroButton.addEventListener("mouseover", () => {
     heroButton.style.boxShadow = "0px 10px 20px rgba(0, 0, 0, 0.2)";
   }),
@@ -54,8 +54,8 @@ heroButton &&
   })),
   document.querySelectorAll("form").forEach((e) => {
     e.addEventListener("submit", (t) => {
-      const n = e.querySelectorAll("input[required]");
-      for (let e of n)
+      const o = e.querySelectorAll("input[required]");
+      for (let e of o)
         if (!e.value.trim())
           return (
             t.preventDefault(),
@@ -63,7 +63,7 @@ heroButton &&
             void e.focus()
           );
     });
-  });
+  }));
 const settingsButton = document.querySelector("#settings-btn"),
   settingsPanel = document.querySelector("#settings-panel");
 settingsButton &&
@@ -81,9 +81,9 @@ courseDetailsBtns &&
     e.addEventListener("click", function () {
       const e = this.getAttribute("data-title"),
         t = this.getAttribute("data-description");
-      (courseModal.querySelector(".modal-title").innerText = e),
+      ((courseModal.querySelector(".modal-title").innerText = e),
         (courseModal.querySelector(".modal-description").innerText = t),
-        courseModal.classList.add("active");
+        courseModal.classList.add("active"));
     });
   }),
   closeModalBtn.addEventListener("click", function () {

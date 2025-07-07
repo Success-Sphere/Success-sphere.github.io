@@ -1,32 +1,10 @@
 {
-  "name": "success-sphere",
+  "name": "mysphere-api",
   "version": "1.0.0",
-  "scripts": {
-    "start": "php -S localhost:8000 & browser-sync start --proxy localhost:8000 --files '**/*.*'"
-  },
-  "main": "auth.js",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Success-Sphere/Success-sphere.github.io.git"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/Success-Sphere/Success-sphere.github.io/issues"
-  },
-  "homepage": "https://github.com/Success-Sphere/Success-sphere.github.io#readme",
+  "type": "module",
+  "description": "Serverless MySQL auth API for Success Sphere",
   "dependencies": {
-    "bcrypt": "^6.0.0",
-    "body-parser": "^2.2.0",
-    "cors": "^2.8.5",
-    "express": "^5.1.0",
-    "mysql2": "^3.14.1"
-  },
-  "devDependencies": {
-    "clean-css": "^5.3.3",
-    "html-minifier-terser": "^7.2.0",
-    "terser": "^5.43.1"
-  },
-  "description": ""
+    "bcryptjs": "^2.4.3",
+    "mysql2": "^3.9.3"
+  }
 }
