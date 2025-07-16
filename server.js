@@ -1,9 +1,7 @@
-const express = require("express"),
-  mysql = require("mysql2"),
-  path = require("path"),
-  bodyParser = require("body-parser"),
-  bcrypt = require("bcrypt"),
-  app = express(),
+import express from "express";
+import mysql from "mysql2";
+import cors from "cors";
+const app = express(),
   PORT = 3e3,
   db = mysql.createConnection({
     host: "localhost",
@@ -12,58 +10,52 @@ const express = require("express"),
       "GHHJghjgYT&T&*h%^*%^6oVHGT&D%$etybHUTUGHIT*jNKHGT&RR^EYyigURUYUhuiyWREGRNCDWRES@RDFYT%D$ERDFHGUG&^FYERDFGHJKLIHUYTHJOLI):P(",
     database: "success_sphere",
   });
-(app.post("/api/logout", (e, s) => {
-  s.status(200).send("Logged out");
+db.connect((s) => {
+  if (s) throw s;
 }),
-  db.connect((e) => {
-    (e && (console.error("MySQL connection failed:", e), process.exit(1)),
-      console.log("✅ Connected to MySQL"));
-  }),
-  app.use(express.static(__dirname)),
-  app.use(bodyParser.urlencoded({ extended: !0 })),
+  app.use(cors()),
   app.use(express.json()),
-  app.get("/", (e, s) => s.sendFile(path.join(__dirname, "index.html"))),
-  app.get("/register", (e, s) =>
-    s.sendFile(path.join(__dirname, "register.html")),
-  ),
-  app.get("/login", (e, s) => s.sendFile(path.join(__dirname, "login.html"))),
-  app.get("/dashboard", (e, s) =>
-    s.sendFile(path.join(__dirname, "dashboard.html")),
-  ),
-  app.get("/about", (e, s) => s.sendFile(path.join(__dirname, "about.html"))),
-  app.post("/register", (e, s) => {
-    const {
-      fullName: a,
-      email: o,
-      phone: r,
-      password: t,
-      confirm_password: n,
-    } = e.body;
-    if (t !== n) return s.status(400).send("❌ Passwords do not match.");
+  app.use(express.static(".")),
+  app.post("/login", (s, e) => {
+    const { email: o, password: r } = s.body;
+    db.query(
+      "SELECT fullName, email FROM users WHERE email = ? AND password = ?",
+      [o, r],
+      (s, o) => {
+        if (s)
+          return e
+            .status(500)
+            .json({ success: !1, message: "Database error." });
+        if (0 === o.length)
+          return e
+            .status(401)
+            .json({ success: !1, message: "Invalid credentials." });
+        const r = o[0];
+        e.json({ success: !0, user: r });
+      }
+    );
+  }),
+  app.post("/register", (s, e) => {
+    const { fullName: o, email: r, phone: a, password: t } = s.body;
     db.query(
       "INSERT INTO users (fullName, email, phone, password) VALUES (?, ?, ?, ?)",
-      [a, o, r, t],
-      (e) => {
-        if (e)
-          return s.status(500).send("❌ Registration failed: " + e.message);
-        s.send("✅ Registration successful. Redirecting to Dashboard...");
-      },
+      [o, r, a, t],
+      (s, o) => {
+        if (s)
+          return "ER_DUP_ENTRY" === s.code
+            ? e
+                .status(400)
+                .json({ success: !1, message: "User already exists." })
+            : e
+                .status(500)
+                .json({ success: !1, message: "Registration failed." });
+        e.json({ success: !0 });
+      }
     );
   }),
-  app.post("/login", (e, s) => {
-    const { email: a, password: o } = e.body;
-    db.query("SELECT * FROM users WHERE email = ?", [a], async (e, a) =>
-      e
-        ? s.status(500).send("❌ Login error: " + e.message)
-        : 0 === a.length
-          ? s.status(401).send("❌ Invalid email or password.")
-          : (await bcrypt.compare(o, a[0].password))
-            ? void s.send(
-                '\n        <p>✅ Login successful. Redirecting…</p>\n        <script>\n          window.location.href = "/dashboard?login=success";\n        <\/script>\n      ',
-              )
-            : s.status(401).send("❌ Invalid email or password."),
-    );
+  app.post("/api/logout", (s, e) => {
+    e.json({ success: !0 });
   }),
   app.listen(3e3, () => {
-    console.log("🌐 Server running at http://localhost:3000");
-  }));
+    console.log("Server running on http://localhost:3000");
+  });

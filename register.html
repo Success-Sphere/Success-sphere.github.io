@@ -24,44 +24,22 @@
     <section class="auth-section">
       <div class="auth-container">
         <h2>Create Your Account</h2>
-        <form id="registerForm" class="auth-form">
-          <input
-            id="fullname"
-            name="fullName"
-            placeholder="Full Name"
-            required
-          />
-          <input
-            type="email"
-            id="email"
-            name="email"
-            placeholder="Email"
-            required
-          />
-          <input
-            type="tel"
-            id="phone"
-            name="phone"
-            placeholder="Phone Number"
-            required
-          />
+        <form id="registerForm">
+          <input name="fullName" placeholder="Full Name" required />
+          <input type="email" name="email" placeholder="Email" required />
+          <input name="phone" placeholder="Phone" required />
           <input
             type="password"
-            id="password"
             name="password"
-            placeholder="Create Password"
+            placeholder="Password"
             required
-          /><input
-            type="password"
-            id="confirm_password"
+          />
+          <input
             name="confirm_password"
             placeholder="Confirm Password"
             required
           />
-          <button type="submit" class="btn">Register Now</button>
-          <p class="form-note">
-            Already have an account? <a href="login.html">Login here</a>.
-          </p>
+          <button type="submit" class="btn">Register</button>
         </form>
       </div>
     </section>

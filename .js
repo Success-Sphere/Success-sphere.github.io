@@ -1,10 +1,10 @@
-const fs = require("fs");
-const path = require("path");
-const { minify: minifyHTML } = require("html-minifier-terser");
-const CleanCSS = require("clean-css");
-const terser = require("terser");
+import fs from "fs";
+import path from "path";
+import { minify as minifyHTML } from "html-minifier-terser";
+import CleanCSS from "clean-css";
+import * as terser from "terser"; // ✅ FIXED!
 
-const dir = "./"; // current directory
+const dir = "./";
 
 const htmlOptions = {
   collapseWhitespace: true,
@@ -21,15 +21,16 @@ fs.readdirSync(dir).forEach(async (file) => {
   if (!fs.lstatSync(fullPath).isFile()) return;
 
   const content = fs.readFileSync(fullPath, "utf8");
-  let minified;
 
   try {
+    let minified;
     if (ext === ".html") {
       minified = await minifyHTML(content, htmlOptions);
     } else if (ext === ".css") {
       minified = new CleanCSS({ level: 2 }).minify(content).styles;
     } else if (ext === ".js") {
-      minified = (await terser.minify(content)).code;
+      const result = await terser.minify(content);
+      minified = result.code;
     }
 
     if (minified) {
