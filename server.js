@@ -1,1 +1,78 @@
-import express from"express";import mysql from"mysql2";import cors from"cors";const app=express(),PORT=3e3,db=mysql.createConnection({host:"localhost",user:"root",password:"GHHJghjgYT&T&*h%^*%^6oVHGT&D%$etybHUTUGHIT*jNKHGT&RR^EYyigURUYUhuiyWREGRNCDWRES@RDFYT%D$ERDFHGUG&^FYERDFGHJKLIHUYTHJOLI):P(",database:"success_sphere"});db.connect(s=>{if(s)throw s}),app.use(cors()),app.use(express.json()),app.use(express.static(".")),app.post("/login",(s,e)=>{const{email:o,password:r}=s.body;db.query("SELECT fullName, email FROM users WHERE email = ? AND password = ?",[o,r],(s,o)=>{if(s)return e.status(500).json({success:!1,message:"Database error."});if(0===o.length)return e.status(401).json({success:!1,message:"Invalid credentials."});const r=o[0];e.json({success:!0,user:r})})}),app.post("/register",(s,e)=>{const{fullName:o,email:r,phone:a,password:t}=s.body;db.query("INSERT INTO users (fullName, email, phone, password) VALUES (?, ?, ?, ?)",[o,r,a,t],(s,o)=>{if(s)return"ER_DUP_ENTRY"===s.code?e.status(400).json({success:!1,message:"User already exists."}):e.status(500).json({success:!1,message:"Registration failed."});e.json({success:!0})})}),app.post("/api/logout",(s,e)=>{e.json({success:!0})}),app.listen(3e3,()=>{console.log("Server running on http://localhost:3000")});
+import express from "express";
+import cors from "cors";
+import path from "path";
+import dotenv from "dotenv";
+import jwt from "jsonwebtoken";
+import { fileURLToPath } from "url";
+import { db } from "./db.js";
+
+dotenv.config();
+
+const app = express();
+const port = 3000;
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+app.use(cors());
+app.use(express.json());
+app.use(express.static(__dirname));
+
+// --- REGISTER API ---
+app.post("/api/register", (req, res) => {
+  const { fullName, email, password } = req.body;
+  if (!fullName || !email || !password) {
+    return res.status(400).json({ message: "Please fill all fields." });
+  }
+
+  const query =
+    "INSERT INTO users (fullName, email, password) VALUES (?, ?, ?)";
+  db.query(query, [fullName, email, password], (err, result) => {
+    if (err) {
+      console.error("❌ Registration Error:", err.message);
+      return res.status(500).json({ message: "Server error" });
+    }
+    return res.status(201).json({ message: "Registered successfully" });
+  });
+});
+
+// --- LOGIN API ---
+app.post("/api/login", (req, res) => {
+  const { email, password } = req.body;
+  const query = "SELECT * FROM users WHERE email = ? AND password = ?";
+  db.query(query, [email, password], (err, results) => {
+    if (err) return res.status(500).json({ message: "Server error" });
+    if (results.length === 0)
+      return res.status(401).json({ message: "Invalid credentials" });
+
+    const user = results[0];
+    const token = jwt.sign(
+      { id: user.id, fullName: user.fullName },
+      process.env.JWT_SECRET,
+      { expiresIn: "2h" }
+    );
+
+    res.cookie("token", token, { httpOnly: true });
+    res.json({ message: "Login successful", fullName: user.fullName });
+  });
+});
+
+// --- SESSION API ---
+app.get("/api/session", (req, res) => {
+  const token = req.headers.authorization?.split(" ")[1];
+  if (!token) return res.status(401).json({ message: "Unauthorized" });
+
+  jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+    if (err) return res.status(403).json({ message: "Invalid token" });
+    res.json({ fullName: decoded.fullName });
+  });
+});
+
+// Serve index.html as root
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, "index.html"));
+});
+
+app.listen(port, () => {
+  console.log(`✅ Server running at http://localhost:${port}`);
+});

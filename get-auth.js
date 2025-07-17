@@ -1,1 +1,16 @@
-document.addEventListener("DOMContentLoaded",()=>{const e=localStorage.getItem("ssphere_user");if(e)try{const t=JSON.parse(e);t.fullName&&t.email&&renderUserProfile(t)}catch(e){}}),document.addEventListener("DOMContentLoaded",()=>{const e=localStorage.getItem("ssphere_user");if(e)try{const t=JSON.parse(e);t.fullName&&t.email&&renderUserProfile(t)}catch(e){}}),document.addEventListener("DOMContentLoaded",()=>{const e=localStorage.getItem("ssphere_user");if(e)try{const t=JSON.parse(e);t.fullName&&t.email&&renderUserProfile(t)}catch(e){}});
+fetch("/api/session", {
+  headers: {
+    Authorization: `Bearer ${document.cookie.replace("token=", "")}`,
+  },
+})
+  .then((res) => res.json())
+  .then((data) => {
+    if (data.fullName) {
+      document.getElementById("user-name").innerText = data.fullName;
+    } else {
+      window.location.href = "login.html";
+    }
+  })
+  .catch(() => {
+    window.location.href = "login.html";
+  });

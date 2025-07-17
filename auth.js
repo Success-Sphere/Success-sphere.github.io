@@ -1,1 +1,49 @@
-function toggleUserMenu(){const e=document.getElementById("user-menu");if(e){const t=e.classList.toggle("show");e.style.display=t?"block":"none"}}function logoutUser(){fetch("/api/logout",{method:"POST"}).finally(()=>{localStorage.removeItem("ssphere_user"),localStorage.removeItem("ssphere_name"),window.location.href="index.html"})}function renderUserProfile(e){const t=e.fullName.split(" ").map(e=>e[0]).join("").toUpperCase().slice(0,2),n=document.getElementById("auth-area");n&&(n.innerHTML=`\n      <div id="user-circle" class="user-circle">${t}</div>\n      <div id="user-menu" class="user-menu" style="display: none;">\n        <div class="user-menu-header">\n          <div class="user-initial-circle">${t}</div>\n          <div class="user-info-text">\n            <p class="user-name">${e.fullName}</p>\n            <p class="user-email">${e.email}</p>\n          </div>\n        </div>\n        <hr />\n        <div class="user-menu-links">\n          <a href="dashboard.html" class="menu-link">My Profile</a>\n          <button onclick="logoutUser()" class="logout-btn">Logout</button>\n        </div>\n      </div>\n    `,document.getElementById("user-circle").addEventListener("click",toggleUserMenu))}window.addEventListener("click",e=>{const t=document.getElementById("user-menu"),n=document.getElementById("user-circle");t&&n&&!t.contains(e.target)&&!n.contains(e.target)&&(t.style.display="none",t.classList.remove("show"))}),window.addEventListener("DOMContentLoaded",()=>{const e=document.getElementById("loginForm");e&&e.addEventListener("submit",async t=>{t.preventDefault();const n=new FormData(e),s=Object.fromEntries(n.entries());try{const e=await fetch("/login",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(s)}),t=await e.json();e.ok&&t.success?(localStorage.setItem("ssphere_user",JSON.stringify(t.user)),localStorage.setItem("ssphere_name",t.user.fullName),window.location.href="dashboard.html"):alert("❌ "+(t.message||"Login failed."))}catch(e){alert("❌ Network/server error. Try again later.")}})}),document.addEventListener("DOMContentLoaded",()=>{const e=document.getElementById("registerForm");e&&e.addEventListener("submit",async t=>{t.preventDefault();const n=new FormData(e),s=Object.fromEntries(n.entries());if(s.password===s.confirm_password)try{const e=await fetch("/register",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(s)}),t=await e.json();e.ok&&t.success?window.location.href="dashboard.html":alert("❌ "+(t.message||"Registration failed."))}catch{alert("❌ Network/server error.")}else alert("❌ Passwords do not match.")})});
+document.addEventListener("DOMContentLoaded", () => {
+  const loginForm = document.getElementById("loginForm");
+  const registerForm = document.getElementById("registerForm");
+
+  if (loginForm) {
+    loginForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const email = document.getElementById("email").value.trim();
+      const password = document.getElementById("password").value.trim();
+
+      const res = await fetch("/api/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      });
+
+      const data = await res.json();
+      if (res.ok) {
+        alert("✅ Login successful");
+        window.location.href = "dashboard.html";
+      } else {
+        alert(`❌ ${data.message}`);
+      }
+    });
+  }
+
+  if (registerForm) {
+    registerForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const fullName = document.getElementById("fullName").value.trim();
+      const email = document.getElementById("email").value.trim();
+      const password = document.getElementById("password").value.trim();
+
+      const res = await fetch("/api/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ fullName, email, password }),
+      });
+
+      const data = await res.json();
+      if (res.ok) {
+        alert("✅ Registration successful");
+        window.location.href = "login.html";
+      } else {
+        alert(`❌ ${data.message}`);
+      }
+    });
+  }
+});
