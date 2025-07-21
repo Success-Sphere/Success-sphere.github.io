@@ -35,8 +35,6 @@ app.post("/api/register", (req, res) => {
     return res.status(201).json({ message: "Registered successfully" });
   });
 });
-
-// --- LOGIN API ---
 app.post("/api/login", (req, res) => {
   const { email, password } = req.body;
   const query = "SELECT * FROM users WHERE email = ? AND password = ?";
