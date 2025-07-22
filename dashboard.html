@@ -9,9 +9,6 @@
       href="https://fonts.googleapis.com/css2?family=Parisienne&display=swap"
       rel="stylesheet"
     />
-    <script src="script.js" defer="defer"></script>
-    <script type="module" src="auth.js"></script>
-    <script type="module" src="get-auth.js"></script>
   </head>
   <body>
     <div id="mobileSidebar" class="sidebar">
@@ -19,10 +16,8 @@
       <a href="index.html">Home</a> <a href="about.html">About</a>
       <a href="courses.html">Courses</a><a href="login.html">Login</a>
       <a href="register.html">Register</a>
-
       <h1 id="greeting">Loading...</h1>
       <div id="dashboard-content"></div>
-
       <script>
         fetch("/api/session", {
           headers: {
@@ -68,5 +63,7 @@
         <button onclick="logoutUser()" class="logout-btn">Logout</button>
       </div>
     </div>
+    <script src="script.js"></script>
+    <script src="get-auth.js"></script>
   </body>
 </html>

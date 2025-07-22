@@ -4,11 +4,20 @@ function toggleSidebar() {
 function untoggleSidebar() {
   document.getElementById("mobileSidebar").classList.remove("open");
 }
-function handleCredentialResponse(e) {
-  const t = jwt_decode(e.credential);
-  localStorage.setItem("user", JSON.stringify(t)),
-    showUserProfile(),
-    (window.location.href = "index.html");
+// Toggle menu
+const userCircle = document.getElementById("user-circle");
+const userMenu = document.getElementById("user-menu");
+
+if (userCircle && userMenu) {
+  userCircle.addEventListener("click", () => {
+    userMenu.classList.toggle("active");
+  });
+
+  document.addEventListener("click", (e) => {
+    if (!userMenu.contains(e.target) && !userCircle.contains(e.target)) {
+      userMenu.classList.remove("active");
+    }
+  });
 }
 document.querySelectorAll(".sidebar a").forEach((e) => {
   e.addEventListener("click", () => {

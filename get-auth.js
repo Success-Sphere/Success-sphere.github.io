@@ -1,29 +1,39 @@
 fetch("/api/session", {
-  headers: {
-    Authorization: `Bearer ${document.cookie.replace("token=", "")}`,
-  },
+  method: "GET",
+  credentials: "include", // ✅ Important: includes any cookies
 })
   .then((res) => res.json())
   .then((data) => {
-    const userSpan = document.getElementById("user-name");
-    if (!userSpan) return;
+    const userName = document.getElementById("user-name");
+    const userInitial = document.getElementById("user-initial");
+    const content = document.getElementById("dashboard-content");
+
     if (data.fullName) {
-      userSpan.innerText = data.fullName;
+      if (userName) userName.innerText = data.fullName;
+      if (userInitial) userInitial.innerText = data.fullName[0].toUpperCase();
+      if (content) {
+        content.innerHTML = `
+          <h2>Welcome back, ${data.fullName} 👋</h2>
+          <p>This is your personalized dashboard.</p>
+        `;
+      }
     } else {
-      userSpan.innerText = "Guest";
+      showGuestFallback();
     }
   })
-  .catch(() => {
-    const userSpan = document.getElementById("user-name");
-    if (userSpan) userSpan.innerText = "Guest";
-  });
-then((data) => {
-  if (data.fullName) {
-    document.getElementById("user-name").innerText = data.fullName;
-  } else {
-    document.getElementById("user-name").innerText = "Guest"; // ✅ No redirect
+  .catch(showGuestFallback);
+
+function showGuestFallback() {
+  const userName = document.getElementById("user-name");
+  const userInitial = document.getElementById("user-initial");
+  const content = document.getElementById("dashboard-content");
+
+  if (userName) userName.innerText = "Guest";
+  if (userInitial) userInitial.innerText = "G";
+  if (content) {
+    content.innerHTML = `
+      <h2>You are not logged in.</h2>
+      <p><a href="login.html">Click here to log in.</a></p>
+    `;
   }
-}).catch(() => {
-  const userNameElement = document.getElementById("user-name");
-  if (userNameElement) userNameElement.innerText = "Guest";
-});
+}

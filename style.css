@@ -186,21 +186,63 @@ body {
   color: #fff;
 }
 .topbar {
-  background-color: #080c1e;
-  padding: 0.625em 1em;
+  display: flex;
+  gap: 2.5vw;
+  align-items: center;
+  background-color: #1b2735;
+  color: #fff;
+  padding-inline: 2.5vw;
+  position: relative;
+  z-index: 9;
+}
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 1.25vw;
+  margin-left: auto;
+}
+.user-circle {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: #3182ce;
   color: #fff;
   display: flex;
   align-items: center;
-}
-.menu-icon {
-  font-size: 1.5em;
-  cursor: pointer;
-  margin-right: 1em;
-}
-.logo {
-  font-size: 1.25em;
+  justify-content: center;
   font-weight: 700;
-  margin: 0;
+  margin-left: 1rem;
+  cursor: pointer;
+}
+.user-menu {
+  position: absolute;
+  top: 60px;
+  right: 0;
+  background: #fff;
+  color: #000;
+  width: 200px;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  display: none;
+  z-index: 99;
+}
+.user-menu.active {
+  display: block;
+}
+.user-menu-header {
+  display: flex;
+  gap: 0.75rem;
+  padding: 1rem;
+  border-bottom: 1px solid #eee;
+}
+.logout-btn {
+  color: #b91c1c;
+  display: block;
+  padding: 0.75rem 1rem;
+  cursor: pointer;
+}
+.logout-btn:hover {
+  background-color: #fee2e2;
 }
 .navbar {
   background-color: #1b2735;

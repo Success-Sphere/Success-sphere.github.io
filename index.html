@@ -21,27 +21,30 @@
       <a href="index.html">Home</a> <a href="about.html">About</a>
       <a href="courses.html">Courses</a><a href="login.html">Login</a>
       <a href="register.html">Register</a>
-      <div class="user-circle" onclick="toggleUserMenu()">A</div>
-      <div id="user-menu" class="user-menu" style="display: none">
-        <div class="user-menu-header">
-          <div class="user-initial-circle">A</div>
-          <div class="user-info-text">
-            <p class="user-name">User Name</p>
-            <p class="user-email">user@example.com</p>
-          </div>
-        </div>
-        <hr />
-        <div class="user-menu-links">
-          <a href="dashboard.html" class="menu-link">My Profile</a>
-          <button onclick="logoutUser()" class="logout-btn">Logout</button>
-        </div>
-      </div>
     </div>
     <div class="topbar">
       <span class="menu-icon" onclick="toggleSidebar()">&#9776;</span>
       <h1 class="logo">Success Sphere</h1>
+      <div class="nav-right">
+        <span class="user-circle" id="user-circle"
+          ><span id="user-initial">U</span></span
+        >
+        <div class="user-menu" id="user-menu">
+          <div class="user-menu-header">
+            <span class="user-avatar">👤</span>
+            <div>
+              <p class="user-name" id="user-name">Guest</p>
+              <p class="user-email" id="user-email">user@example.com</p>
+            </div>
+          </div>
+          <hr />
+          <div class="user-menu-links">
+            <a href="dashboard.html" class="menu-link">Dashboard</a>
+            <a href="#" class="logout-btn">Log out</a>
+          </div>
+        </div>
+      </div>
     </div>
-    <div id="auth-area" class="auth-right"></div>
     <header class="hero">
       <div class="hero-text">
         <h1>Professional Excellence Through Education</h1>
