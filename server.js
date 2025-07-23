@@ -1,68 +1,7 @@
-import express from "express";
-import cors from "cors";
-import path from "path";
-import dotenv from "dotenv";
-import jwt from "jsonwebtoken";
-import { fileURLToPath } from "url";
-import { db } from "./db.js";
-dotenv.config();
-const app = express();
-const port = 3e3;
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-app.use(cors());
-app.use(express.json());
-app.use(express.static(__dirname));
+import express from"express";import cors from"cors";import path from"path";import dotenv from"dotenv";import jwt from"jsonwebtoken";import{fileURLToPath}from"url";import{db}from"./db.js";dotenv.config();const app=express();const port=3e3;const __filename=fileURLToPath(import.meta.url);const __dirname=path.dirname(__filename);app.use(cors());app.use(express.json());app.use(express.static(__dirname));
 // --- REGISTER API ---
-app.post("/api/register", (req, res) => {
-  const { fullName: fullName, email: email, password: password } = req.body;
-  if (!fullName || !email || !password) {
-    return res.status(400).json({ message: "Please fill all fields." });
-  }
-  const query =
-    "INSERT INTO users (fullName, email, password) VALUES (?, ?, ?)";
-  db.query(query, [fullName, email, password], (err, result) => {
-    if (err) {
-      console.error("❌ Registration Error:", err.message);
-      return res.status(500).json({ message: "Server error" });
-    }
-    return res.status(201).json({ message: "Registered successfully" });
-  });
-});
-app.post("/api/login", (req, res) => {
-  const { email: email, password: password } = req.body;
-  const query = "SELECT * FROM users WHERE email = ? AND password = ?";
-  db.query(query, [email, password], (err, results) => {
-    if (err) return res.status(500).json({ message: "Server error" });
-    if (results.length === 0)
-      return res.status(401).json({ message: "Invalid credentials" });
-    const user = results[0];
-    const token = jwt.sign(
-      { id: user.id, fullName: user.fullName },
-      process.env.JWT_SECRET,
-      { expiresIn: "2h" }
-    );
-    res.cookie("token", token, { httpOnly: true });
-    res.json({ message: "Login successful", fullName: user.fullName });
-  });
-});
+app.post("/api/register",(req,res)=>{const{fullName:fullName,email:email,password:password}=req.body;if(!fullName||!email||!password){return res.status(400).json({message:"Please fill all fields."})}const query="INSERT INTO users (fullName, email, password) VALUES (?, ?, ?)";db.query(query,[fullName,email,password],(err,result)=>{if(err){console.error("❌ Registration Error:",err.message);return res.status(500).json({message:"Server error"})}return res.status(201).json({message:"Registered successfully"})})});app.post("/api/login",(req,res)=>{const{email:email,password:password}=req.body;const query="SELECT * FROM users WHERE email = ? AND password = ?";db.query(query,[email,password],(err,results)=>{if(err)return res.status(500).json({message:"Server error"});if(results.length===0)return res.status(401).json({message:"Invalid credentials"});const user=results[0];const token=jwt.sign({id:user.id,fullName:user.fullName},process.env.JWT_SECRET,{expiresIn:"2h"});res.cookie("token",token,{httpOnly:true});res.json({message:"Login successful",fullName:user.fullName})})});
 // --- SESSION API ---
-import cookieParser from "cookie-parser";
-app.use(cookieParser());
-app.get("/api/session", (req, res) => {
-  const token = req.cookies.token;
-  if (!token) return res.status(401).json({ message: "Unauthorized" });
-
-  jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
-    if (err) return res.status(403).json({ message: "Invalid token" });
-    res.json({ fullName: decoded.fullName });
-  });
-});
-
+import cookieParser from"cookie-parser";app.use(cookieParser());app.get("/api/session",(req,res)=>{const token=req.cookies.token;if(!token)return res.status(401).json({message:"Unauthorized"});jwt.verify(token,process.env.JWT_SECRET,(err,decoded)=>{if(err)return res.status(403).json({message:"Invalid token"});res.json({fullName:decoded.fullName})})});
 // Serve index.html as root
-app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "index.html"));
-});
-app.listen(port, () => {
-  console.log(`✅ Server running at http://localhost:${port}`);
-});
+app.get("/",(req,res)=>{res.sendFile(path.join(__dirname,"index.html"))});app.listen(port,()=>{console.log(`✅ Server running at http://localhost:${port}`)});
