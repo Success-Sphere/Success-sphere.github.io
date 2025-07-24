@@ -1,1 +1,70 @@
-<!DOCTYPE html><html><head><title>Dashboard - Success Sphere</title><link rel="stylesheet" href="style.css"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Parisienne&display=swap" rel="stylesheet"></head><body><!-- 👉 Sidebar --><div id="mobileSidebar" class="sidebar"><a class="closebtn" onclick="untoggleSidebar()">&times;</a> <a href="index.html">Home</a> <a href="about.html">About</a> <a href="courses.html">Courses</a> <a href="login.html">Login</a> <a href="register.html">Register</a></div><!-- 👉 Topbar --><div class="topbar"><span class="menu-icon" onclick="toggleSidebar()">&#9776;</span><h1 class="logo">Success Sphere</h1><!-- ✅ User Dropdown Trigger --><div class="user-circle" id="user-circle">A</div><!-- ✅ User Dropdown Menu --><div id="user-menu" class="user-menu"><div class="user-menu-header"><div class="user-initial-circle" id="user-initial">A</div><div class="user-info-text"><p class="user-name" id="user-name">Guest</p><p class="user-email" id="user-email">user@example.com</p></div></div><hr><div class="user-menu-links"><a href="dashboard.html" class="menu-link">My Profile</a> <button class="logout-btn" id="logout-btn">Log Out</button></div></div></div><!-- 💡 Dashboard area --><main><section id="dashboard-content"><p>🔄 Checking session...</p></section></main><script src="script.js"></script><script src="get-auth.js"></script></body></html>
+<!DOCTYPE html><html><head><title>Dashboard - Success Sphere</title><link rel="stylesheet" href="style.css"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Parisienne&display=swap" rel="stylesheet"></head><body><!-- 👉 Sidebar --><div id="mobileSidebar" class="sidebar"><a class="closebtn" onclick="untoggleSidebar()">&times;</a> <a href="index.html">Home</a> <a href="about.html">About</a> <a href="courses.html">Courses</a> <a href="login.html">Login</a> <a href="register.html">Register</a></div><!-- Topbar --><div class="topbar"><span class="menu-icon" onclick="toggleSidebar()">&#9776;</span><h1 class="logo">Success Sphere</h1><!-- User Dropdown Trigger --><div class="user-circle" id="user-circle">A</div><!-- User Dropdown Menu --><div id="user-menu" class="user-menu" style="display: none"><div class="user-menu-header"><div class="user-initial-circle" id="user-initial">A</div><div class="user-info-text"><p class="user-name" id="user-name">Guest</p><p class="user-email" id="user-email">user@example.com</p></div></div><hr><div class="user-menu-links"><a href="dashboard.html" class="menu-link">My Profile</a> <button class="logout-btn" id="logout-btn">Log Out</button></div></div></div><!-- Dashboard --><main><section id="dashboard-content"><p>🔄 Checking session...</p></section></main><script src="script.js"></script><script src="get-auth.js"></script><script>window.addEventListener("DOMContentLoaded", () => {
+        const userCircle = document.getElementById("user-circle");
+        const userInitial = document.getElementById("user-initial");
+        const userNameElem = document.getElementById("user-name");
+        const userEmailElem = document.getElementById("user-email");
+        const dashboardContent = document.getElementById("dashboard-content");
+        const logoutBtn = document.getElementById("logout-btn");
+
+        fetch("/api/session")
+          .then((res) => {
+            if (!res.ok) throw new Error("Not logged in");
+            return res.json();
+          })
+          .then((data) => {
+            if (!data.loggedIn) throw new Error("Not logged in");
+
+            const { fullName, email, avatarUrl } = data.user;
+
+            // Update user circle - use avatarUrl or initials
+            if (avatarUrl) {
+              userCircle.style.backgroundImage = `url(${avatarUrl})`;
+              userCircle.textContent = "";
+              userCircle.style.backgroundSize = "cover";
+            } else {
+              const initial = fullName ? fullName.charAt(0).toUpperCase() : "U";
+              userCircle.style.backgroundImage = "";
+              userCircle.textContent = initial;
+            }
+
+            // Update user initials circle in dropdown
+            const initial = fullName ? fullName.charAt(0).toUpperCase() : "U";
+            userInitial.textContent = initial;
+
+            // Update name and email
+            userNameElem.textContent = fullName || "User";
+            userEmailElem.textContent = email || "user@example.com";
+
+            // Replace dashboard content with welcome message or real content
+            dashboardContent.innerHTML = `<h2>Welcome, ${fullName}!</h2><p>Your dashboard content goes here.</p>`;
+          })
+          .catch(() => {
+            // Not logged in or error; redirect to login
+            window.location.href = "login.html";
+          });
+
+        logoutBtn.addEventListener("click", () => {
+          fetch("/api/logout", { method: "POST" })
+            .then(() => {
+              window.location.href = "login.html";
+            })
+            .catch(() => alert("Logout failed"));
+        });
+
+        // Toggle user menu visibility on clicking user circle
+        userCircle.addEventListener("click", () => {
+          const userMenu = document.getElementById("user-menu");
+          userMenu.style.display =
+            userMenu.style.display === "block" ? "none" : "block";
+        });
+
+        // Close user menu on clicking outside
+        window.addEventListener("click", (e) => {
+          if (
+            !e.target.closest("#user-circle") &&
+            !e.target.closest("#user-menu")
+          ) {
+            document.getElementById("user-menu").style.display = "none";
+          }
+        });
+      });</script></body></html>
